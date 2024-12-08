@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        satoshi: ['var(--font-satoshi)', 'sans-serif'],
+        ClashDisplay: ['var(--font-ClashDisplay)', 'sans-serif']
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
@@ -16,4 +20,5 @@ const config: Config = {
   },
   plugins: [],
 };
+
 export default config;
