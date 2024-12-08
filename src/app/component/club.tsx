@@ -11,16 +11,16 @@ const Club = () => {
           Sign up for our newsletter and receive exclusive offers on new ranges,
           sales, pop-up stores, and more.
         </p>
-        <div className="flex items-center w-full px-80 mt-3">
-  <input
-    type="email"
-    placeholder="your@gmail.com"
-    className="p-3 border-[#F9F9F9]"
-  />
-  <button className="bg-black h-[50px] w-[118px] flex justify-center items-center text-white hover:bg-black rounded-sm">
-    Sign Up
-  </button>
-</div>
+        <span className="w-[500px] h-12 relative flex">
+              <input
+                type="text"
+                className="h-full w-full bg-[#F9F9F9] px-4 focus:outline-none text-white"
+                placeholder="your@email.com"
+              />
+              <button className="bg-[#2A254B] absolute top-0 right-0 h-full w-24 text-white capitalize text-black text-sm">
+                sign up
+              </button>
+            </span>
 
       </div>
     </div>

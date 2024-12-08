@@ -8,7 +8,7 @@ import { FaTwitter } from "react-icons/fa";
 const Footer = () => {
   return (
     <div>
-      <div className="bg-[#2A254B] w-full text-white py-20  sm:px-8 lg:px-16 px-20">
+      <div className="bg-[#2A254B] w-full  text-white py-20  sm:px-8 lg:px-16 px-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 px-16">
           {/* Exclusive Section */}
           <div className="w-full">

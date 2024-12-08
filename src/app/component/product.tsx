@@ -16,7 +16,7 @@ const Product = () => {
         {/* Column 1 (spans 2 columns on large screens) */}
         <div className="lg:col-span-2">
           <div className="bg-[#F5F5F5] flex justify-center items-center">
-            <div className="w-full h-[375px] relative">
+            <div className="w-full h-[375px] relative transform hover:scale-105 transition-all duration-300">
               <Image
                 src="/Large.png"
                 alt="large"
@@ -35,7 +35,7 @@ const Product = () => {
         {/* Column 2 */}
         <div>
           <div className="bg-[#F5F5F5] flex justify-center items-center">
-            <div className="w-[305px] h-[375px] relative">
+            <div className="w-[305px] h-[375px] relative transform hover:scale-105 transition-all duration-300">
               <Image
                 src="/hero.png"
                 alt="parent"
@@ -54,7 +54,7 @@ const Product = () => {
         {/* Column 3 */}
         <div>
           <div className="bg-[#F5F5F5] flex justify-center items-center">
-            <div className="w-[305px] h-[375px] relative">
+            <div className="w-[305px] h-[375px] relative transform hover:scale-105 transition-all duration-300">
               <Image
                 src="/chair2.png"
                 alt="silk"
@@ -76,6 +76,7 @@ const Product = () => {
           </button></div>
       
       </div>
+
   
   );
 };

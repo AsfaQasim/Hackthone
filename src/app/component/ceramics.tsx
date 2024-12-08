@@ -1,20 +1,24 @@
 import React from 'react';
 import Image from 'next/image';
 
-const Ceramics = () => {
+interface CeramicsProps {
+  heading?: string; // Marked as optional
+}
+
+const Ceramics: React.FC<CeramicsProps> = ({ heading = 'New Ceramics' }) => {
   return (
     <div className='w-full px-20 min-h-[70vh]'>
-      {/* Heading */}
+      {/* Dynamic Heading */}
       <div className='mb-10'>
         <h1 className='font-ClashDisplay text-[32px] font-normal'>
-          New ceramics
+          {heading} {/* Use the optional heading prop */}
         </h1>
       </div>
 
       {/* Responsive grid columns */}
       <div className="max-w-[1308px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Column 1 */}
-        <div>
+        <div className="transform hover:scale-105 transition-all duration-300">
           <div className="bg-[#F5F5F5] flex justify-center items-center">
             <div className="w-[305px] h-[375px] relative">
               <Image
@@ -33,7 +37,7 @@ const Ceramics = () => {
         </div>
 
         {/* Column 2 */}
-        <div>
+        <div className="transform hover:scale-105 transition-all duration-300">
           <div className="bg-[#F5F5F5] flex justify-center items-center">
             <div className="w-[305px] h-[375px] relative">
               <Image
@@ -52,7 +56,7 @@ const Ceramics = () => {
         </div>
 
         {/* Column 3 */}
-        <div>
+        <div className="transform hover:scale-105 transition-all duration-300">
           <div className="bg-[#F5F5F5] flex justify-center items-center">
             <div className="w-[305px] h-[375px] relative">
               <Image
@@ -71,7 +75,7 @@ const Ceramics = () => {
         </div>
 
         {/* Column 4 */}
-        <div>
+        <div className="transform hover:scale-105 transition-all duration-300">
           <div className="bg-[#F5F5F5] flex justify-start items-center">
             <div className="w-[305px] h-[375px] relative">
               <Image
@@ -88,12 +92,14 @@ const Ceramics = () => {
             <p className="text-[14px] text-gray-600">£399</p>
           </div>
         </div>
-        <div className='pt-16 pl-[470px]'> <button className="bg-[#F9F9F9] h-[56px] w-[200px]  flex justify-center items-center text-black hover:bg-slate-500 mt-8">
+
+        {/* View Collection Button */}
+        <div className='pt-16 pl-[470px]'>
+          <button className="bg-[#F9F9F9] h-[56px] w-[200px] flex justify-center items-center text-black hover:bg-slate-500 mt-8">
             View Collection
-          </button></div>
-      
+          </button>
+        </div>
       </div>
-   
     </div>
   );
 };
