@@ -4,13 +4,13 @@ import "./globals.css";
 import Header from "./component/header";
 import Footer from "./component/footer";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+const  satoshi = localFont({
+  src: "./fonts/Satoshim.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+const ClashDisplay= localFont({
+  src: "./fonts/ClashDisplay.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${satoshi.variable} ${ClashDisplay.variable} antialiased`}
       >
         <Header/>
         {children}

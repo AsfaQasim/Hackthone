@@ -7,3 +7,11 @@ body {
 a {
   font-family: 'Satoshi', sans-serif;
 }
+@font-face {
+  font-family: "GeistMono";
+  src: url("/fonts/GeistMonoVF.woff") format("woff");
+}
+@font-face {
+  font-family: "GeistMono";
+  src: url("/fonts/GeistMonoVF.woff") format("woff");
+}
