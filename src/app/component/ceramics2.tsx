@@ -6,7 +6,7 @@ interface CeramicsProps {
   heading?: string; // Marked as optional
 }
 
-const Ceramics2: React.FC<CeramicsProps> = ({ heading = 'New Ceramics' }) => {
+const Ceramics2: React.FC<CeramicsProps> = () => {
   return (
     <div>
       {/* Responsive grid columns */}

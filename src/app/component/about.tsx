@@ -21,7 +21,7 @@ const About2 = () => {
       <div className="w-1/2 bg-[#F9F9F9] flex flex-col justify-center items-start p-6 gap-6 h-full">
         {/* Heading */}
         <h1 className="font-normal text-[32px] text-[#2A254B]">
-          Our service isn't just personal, it&apos;s actually hyper personally
+          Our service isn&apos;t just personal, it&apos;s actually hyper personally
           exquisite
         </h1>
         {/* Subtext */}
