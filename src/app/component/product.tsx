@@ -3,21 +3,21 @@ import Image from 'next/image';
 
 const Product = () => {
   return (
-    <div className='w-full px-20 min-h-[100vh] py-24'>
+    <div className='w-full md:px-20 p-3 py-24'>
       {/* Heading */}
       <div className='mb-10'>
-        <h1 className='font-ClashDisplay text-[32px] font-normal'>
+        <h1 className='font-[clash] text-[32px] font-normal'>
           Our popular products
         </h1>
       </div>
 
       {/* Responsive grid columns */}
-      <div className="max-w-[1308px] grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className=" gap-6 flex overflow-x-scroll">
         {/* Column 1 (spans 2 columns on large screens) */}
-        <div className="lg:col-span-2">
-          <div className="bg-[#F5F5F5] flex justify-center items-center">
-            <div className="w-full h-[375px] relative transform hover:scale-105 transition-all duration-300">
-              <Image
+        <div  className="h-full">
+          <div className=" h-full flex justify-center items-center">
+            <div className="lg:w-[700px] w-[420px] md:h-[480px] h-[300px] relative transform hover:scale-105 transition-all duration-300">
+              <Image  
                 src="/Large.png"
                 alt="large"
                 layout="fill"
@@ -27,15 +27,15 @@ const Product = () => {
           </div>
           {/* Text below the image */}
           <div className="mt-4 text-start">
-            <h1 className="font-medium text-[16px]">The Poplar suede sofa</h1>
+            <h1 className=  "font-medium text-[16px]">The Poplar suede sofa</h1>
             <p className="text-[14px] text-gray-600">£980</p>
           </div>
         </div>
 
         {/* Column 2 */}
-        <div>
-          <div className="bg-[#F5F5F5] flex justify-center items-center">
-            <div className="w-[305px] h-[375px] relative transform hover:scale-105 transition-all duration-300">
+        <div className="h-full">
+          <div className=" h-full flex justify-center items-center">
+            <div className="md:w-96 w-60 md:h-[480px] h-[300px] relative transform hover:scale-105 transition-all duration-300">
               <Image
                 src="/hero.png"
                 alt="parent"
@@ -52,9 +52,9 @@ const Product = () => {
         </div>
 
         {/* Column 3 */}
-        <div>
-          <div className="bg-[#F5F5F5] flex justify-center items-center">
-            <div className="w-[305px] h-[375px] relative transform hover:scale-105 transition-all duration-300">
+        <div className="h-full">
+          <div className=" h-full flex justify-center items-center">
+            <div className="md:w-96 w-60 md:h-[480px] h-[300px] relative transform hover:scale-105 transition-all duration-300">
               <Image
                 src="/chair2.png"
                 alt="silk"
@@ -69,15 +69,16 @@ const Product = () => {
             <p className="text-[14px] text-gray-600">£250</p>
           </div>
         </div>
-        
-      </div>
-      <div className='pt-16 pl-[470px]'> <button className="bg-[#F9F9F9] h-[56px] w-[200px]  flex justify-center items-center text-black hover:bg-slate-500 mt-8">
-            View Collection
-          </button></div>
-      
-      </div>
 
-  
+      </div>
+      <div className='w-full py-6'>
+        <button className="bg-[#F9F9F9] m-auto flex justify-center items-center text-black hover:bg-slate-500 mt-8 px-8 py-3 font-normal">
+          View Collection
+        </button>
+      </div>
+    </div>
+
+
   );
 };
 

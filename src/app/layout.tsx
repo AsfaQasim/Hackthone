@@ -1,19 +1,7 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
+import "./globals.css"; // Ensure global CSS is applied
 import Header from "./component/header";
 import Footer from "./component/footer";
-
-const  satoshi = localFont({
-  src: "./fonts/Satoshim.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const ClashDisplay= localFont({
-  src: "./fonts/ClashDisplay.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -27,12 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${satoshi.variable} ${ClashDisplay.variable} antialiased`}
-      >
-        <Header/>
+      <body className="antialiased"> {/* Removed custom fonts */}
+        <Header />
         {children}
-        <Footer/>
+        <Footer />
       </body>
     </html>
   );

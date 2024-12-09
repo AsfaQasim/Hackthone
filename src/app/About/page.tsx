@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import About2 from "../component/about";
+import Link from "next/link";
 
 const About = () => {
   return (
@@ -18,9 +19,11 @@ const About = () => {
 
         {/* Right Side (Button) */}
         <div className="flex justify-end w-1/2">
+        <Link href = "/products">
           <button className="bg-[#F9F9F9] h-[56px] w-[200px] flex justify-center items-center text-black hover:bg-slate-500 mt-8">
             View our products
           </button>
+          </Link>
         </div>
       </div>
 
@@ -39,9 +42,11 @@ const About = () => {
               studio in South London in early 2014
             </p>
             {/* Button with gap */}
+            <Link href="/products">
             <button className="bg-[#dbd6f8] h-[56px] w-[150px] flex justify-center items-center text-black hover:bg-slate-500 mt-14">
               View Collection
             </button>
+            </Link>
           </div>
         </div>
 

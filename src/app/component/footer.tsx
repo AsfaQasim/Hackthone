@@ -4,13 +4,13 @@ import { CiFacebook } from "react-icons/ci";
 import { FaInstagramSquare } from "react-icons/fa";
 import { AiFillSkype } from "react-icons/ai";
 import { FaTwitter } from "react-icons/fa";
-
+  
 const Footer = () => {
   return (
     <div>
-      <div className="bg-[#2A254B] w-full  text-white py-20  sm:px-8 lg:px-16 px-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 px-16">
-          {/* Exclusive Section */}
+      <div className="bg-[#2A254B] w-full  text-white py-20  sm:px-8 lg:px-16 px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 md:px-16">
+          
           <div className="w-full">
             <h1 className="font-normal text-[16px] text-[#FFFFFF] mb-4">
               Menu
@@ -50,7 +50,7 @@ const Footer = () => {
             <h1 className="font-normal text-[16px] text-[#FFFFFF] mb-4">
               Join our mailing list
             </h1>
-            <span className="w-[500px] h-12 relative flex">
+            <span className="md:w-[500px] h-12 relative flex">
               <input
                 type="text"
                 className="h-full w-full bg-[#dbd6f8] px-4 focus:outline-none text-white"

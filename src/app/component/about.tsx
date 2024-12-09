@@ -2,23 +2,25 @@ import React from "react";
 import Image from "next/image";
 import Brand from "./brand";
 import Club from "./club";
+import Link from "next/link"
 
 const About2 = () => {
   return (
-    <>
-    <div className="w-full h-[450px] flex bg-[#F5F5F5]"> {/* Increased height */}
+    <> 
+    <div className="w-full flex md:flex-row flex-col bg-[#F5F5F5]"> {/* Increased height */}
+      
       {/* Left Side: Image */}
-      <div className="w-1/2 relative h-full">
-        <Image
+      <div className="md:w-1/2 w-full h-[600px] relative">    
+        <Image 
           src="/about.png"
           alt="image"
           layout="fill"
           className="object-cover"
         />
-      </div>
 
+      </div>
       {/* Right Side: Text */}
-      <div className="w-1/2 bg-[#F9F9F9] flex flex-col justify-center items-start p-6 gap-6 h-full">
+      <div className="md:w-1/2 w-full bg-[#F9F9F9] flex flex-col justify-center items-start md:p-12 p-6 gap-6 h-full m-auto"> 
         {/* Heading */}
         <h1 className="font-normal text-[32px] text-[#2A254B]">
           Our service isn&apos;t just personal, it&apos;s actually hyper personally
@@ -37,11 +39,13 @@ const About2 = () => {
           interior design community.
         </p>
         {/* Button */}
-        <button className="bg-[#FFFFFF] h-[56px] w-[150px] flex justify-center items-center text-black hover:bg-slate-500">
+        <Link href = "/" className="w-full p-6">
+        <button className="bg-[#FFFFFF] px-8 py-3 flex justify-center items-center text-black hover:bg-slate-500">
           Get in touch
         </button>
+        </Link>
       </div>
-    </div>
+    </div> 
   <Brand/>
   <Club/>
     </>

@@ -2,12 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+
 interface CeramicsProps {
   heading?: string; // Marked as optional
 }
 
 const Ceramics2: React.FC<CeramicsProps> = () => {
-  return (
+  return ( 
     <div>
       {/* Responsive grid columns */}
       <div className="max-w-[1308px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-20">
@@ -77,6 +78,7 @@ const Ceramics2: React.FC<CeramicsProps> = () => {
         {/* Column 4 */}
         <div>
           <Link href="/products"> {/* Link to dynamic route */}
+          
             <div className="bg-[#F5F5F5] flex justify-start items-center">
               <div className="w-[305px] h-[375px] relative transform hover:scale-105 transition-all duration-300">
                 <Image
@@ -97,8 +99,8 @@ const Ceramics2: React.FC<CeramicsProps> = () => {
       </div>
 
       {/* View Collection Button */}
-      <div className="pb-3 pl-[500px]">
-        <button className="bg-[#F9F9F9] h-[56px] w-[200px] flex justify-center items-center text-black hover:bg-slate-500 mt-8">
+      <div className='w-full py-6'>
+        <button className="bg-[#F9F9F9] m-auto flex justify-center items-center text-black hover:bg-slate-500 mt-8 px-8 py-3 font-normal">
           View Collection
         </button>
       </div>

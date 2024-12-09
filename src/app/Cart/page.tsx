@@ -1,27 +1,33 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Cart = () => {
   return (
-    <div className="w-full px-20 bg-[#F9F9F9]">
+    <div className="w-full px-4 md:px-20 bg-[#F9F9F9] py-8">
       <div>
-        <h1 className="text-[36px] text-[#2A254B] font-normal mb-4">Your shopping cart</h1>
+        {/* Heading */}
+        <h1 className="text-[28px] md:text-[36px] text-[#2A254B] font-normal mb-6">
+          Your shopping cart
+        </h1>
 
-        {/* Flex Container for Product, Quantity, and Total on the Same Line */}
-        <div className="flex justify-between items-center mb-6">
-          <p className="text-[14px] text-[#2A254B] text-gray-600">Product</p>
-          <p className="text-[14px] text-[#2A254B] text-gray-600">Quantity</p>
-          <p className="text-[14px] text-[#2A254B] text-gray-600">Total</p>
+        {/* Flex Container Header for Product, Quantity, and Total */}
+        <div className="hidden md:flex justify-between items-center mb-4">
+          <p className="text-[14px] text-gray-600">Product</p>
+          <p className="text-[14px] text-gray-600">Quantity</p>
+          <p className="text-[14px] text-gray-600">Total</p>
         </div>
 
-        {/* Flex Container for First Product, Quantity, and Total */}
-        <div className="flex justify-between items-center mb-6">
+        {/* First Product */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 md:gap-0">
           {/* Product Section */}
-          <div className="flex items-center gap-6">
-            <Image src={"/silk.png"} alt="silk" width={109} height={134} />
+          <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto">
+            <Image src="/silk.png" alt="silk" width={109} height={134} />
             <div>
-              <h1 className="text-xl font-medium mb-2">Graystone vase</h1>
-              <p className="w-[179px] text-[#2A254B] text-[14px] mb-2">
+              <h1 className="text-lg md:text-xl font-medium mb-2">
+                Graystone vase
+              </h1>
+              <p className="text-[#2A254B] text-[14px] mb-2">
                 A timeless ceramic vase with a tri-color grey glaze.
               </p>
               <p className="text-lg font-semibold">£85</p>
@@ -29,61 +35,62 @@ const Cart = () => {
           </div>
 
           {/* Quantity Section */}
-          <div className="flex gap-4">
-            <Image src={"/Stepper.png"} alt="stepper" width={122} height={46} />
+          <div className="flex justify-center items-center gap-4">
+            <Image src="/Stepper.png" alt="stepper" width={122} height={46} />
           </div>
 
           {/* Total Section */}
-          <div>
-            <p className="text-[#2A254B] text-lg font-semibold">£85</p>
-          </div>
+          <div className="text-lg font-semibold text-[#2A254B]">£85</div>
         </div>
 
-        {/* Flex Container for Second Product, Quantity, and Total */}
-        <div className="flex justify-between items-center mb-6">
+        {/* Second Product */}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 md:gap-0">
           {/* Product Section */}
-          <div className="flex items-center gap-6">
-            <Image src={"/pro.png"} alt="pro" width={109} height={134} />
+          <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto">
+            <Image src="/pro.png" alt="pro" width={109} height={134} />
             <div>
-              <h1 className="text-xl font-medium mb-2">Basic white vase</h1>
-              <p className="w-[179px] text-[#2A254B] text-[14px] mb-2">
+              <h1 className="text-lg md:text-xl font-medium mb-2">
+                Basic white vase
+              </h1>
+              <p className="text-[#2A254B] text-[14px] mb-2">
                 Beautiful and simple, this is one for the classics.
               </p>
-              <p className="text-lg font-semibold">£85</p>
+              <p className="text-lg font-semibold">£125</p>
             </div>
           </div>
 
           {/* Quantity Section */}
-          <div className="flex gap-4">
-            <Image src={"/Stepper.png"} alt="stepper" width={122} height={46} />
+          <div className="flex justify-center items-center gap-4">
+            <Image src="/Stepper.png" alt="stepper" width={122} height={46} />
           </div>
 
           {/* Total Section */}
-          <div>
-            <p className="text-[#2A254B] text-lg font-semibold">£125</p>
-          </div>
+          <div className="text-lg font-semibold text-[#2A254B]">£125</div>
         </div>
       </div>
 
-      <hr className="w-full border-b-2 border-[#EBE8F4]" />
+      {/* Divider */}
+      <hr className="w-full border-b-2 border-[#EBE8F4] mb-6" />
 
       {/* Subtotal Section */}
-      <div className="w-full h-[240px] border border-[#F9F9F9] px-20">
-        <div className="w-full h-full border-2 border-[#F9F9F9] p-8 flex justify-end flex-col items-end">
+      <div className="w-full bg-white border border-[#EBE8F4] p-6 md:p-8">
+        <div className="flex flex-col items-end">
           <div className="text-right mb-4">
-            <h1 className="font-ClashDisplay text-[#4E4D93] font-normal text-[20px]">
+            <h1 className="font-normal text-[#4E4D93] text-[20px] mb-2">
               Subtotal
             </h1>
             <p className="text-black text-lg font-normal">£210</p>
-            <p className="text-black text-[#4E4D93] mb-4">Taxes and shipping are calculated at checkout</p>
+            <p className="text-sm text-[#4E4D93]">
+              Taxes and shipping are calculated at checkout
+            </p>
           </div>
 
-          {/* Go to Checkout Button */}
-          <span className="w-full flex justify-end">
-            <button className="bg-[#2A254B] w-[172px] h-[56px] text-white capitalize text-black text-sm">
+          {/* Checkout Button */}
+          <Link href="/">
+            <button className="bg-[#2A254B] w-full md:w-[172px] h-[56px] text-white text-sm capitalize">
               Go to checkout
             </button>
-          </span>
+          </Link>
         </div>
       </div>
     </div>

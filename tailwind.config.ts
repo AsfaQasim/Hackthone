@@ -8,21 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        satoshi: ['var(--font-satoshi)', 'sans-serif'],
-        ClashDisplay: ['var(--font-ClashDisplay)', 'sans-serif'],
-      },
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+      // Additional theme extensions can go here
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/aspect-ratio'),
-  ],
+  plugins: [require('@tailwindcss/typography')], // Make sure this line is here
 };
 
 export default config;
