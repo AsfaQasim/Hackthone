@@ -61,7 +61,7 @@ const Header = () => {
           Home
         </Link>
         <Link
-          href="/about"
+          href="/About"
           className="text-[#726E8D] hover:text-black transition-all py-2"
         >
           About
@@ -73,7 +73,7 @@ const Header = () => {
           Products
         </Link>
         <Link
-          href="/cart"
+          href="/Cart"
           className="text-[#726E8D] hover:text-black transition-all py-2"
         >
           Cart

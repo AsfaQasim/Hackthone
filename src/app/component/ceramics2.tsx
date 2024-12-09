@@ -34,7 +34,7 @@ const Ceramics2: React.FC<CeramicsProps> = () => {
 
         {/* Column 2 */}
         <div>
-          <Link href="/products/2"> {/* Link to dynamic route */}
+          <Link href="/products"> {/* Link to dynamic route */}
             <div className="bg-[#F5F5F5] flex justify-center items-center">
               <div className="w-[305px] h-[375px] relative transform hover:scale-105 transition-all duration-300">
                 <Image
@@ -55,7 +55,7 @@ const Ceramics2: React.FC<CeramicsProps> = () => {
 
         {/* Column 3 */}
         <div>
-          <Link href="/products/3"> {/* Link to dynamic route */}
+          <Link href="/products"> {/* Link to dynamic route */}
             <div className="bg-[#F5F5F5] flex justify-center items-center">
               <div className="w-[305px] h-[375px] relative transform hover:scale-105 transition-all duration-300">
                 <Image
@@ -76,7 +76,7 @@ const Ceramics2: React.FC<CeramicsProps> = () => {
 
         {/* Column 4 */}
         <div>
-          <Link href="/products/4"> {/* Link to dynamic route */}
+          <Link href="/products"> {/* Link to dynamic route */}
             <div className="bg-[#F5F5F5] flex justify-start items-center">
               <div className="w-[305px] h-[375px] relative transform hover:scale-105 transition-all duration-300">
                 <Image

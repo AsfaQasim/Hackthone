@@ -15,3 +15,7 @@ a {
   font-family: "GeistMono";
   src: url("/fonts/GeistMonoVF.woff") format("woff");
 }
+:root {
+  --background: #f8f9fa;
+  --foreground: #212529;
+}
