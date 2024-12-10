@@ -4,9 +4,9 @@ import Image from 'next/image';
 const Brand = () => {
   return (
     <div>
-      <div className={`font-[satoshi] max-w-full flex justify-center text-[#2A254B] font-normal text-[24px] py-7 sm:px-6`}>
-        What makes our brand different
-      </div>
+     <div className="text-[#2A254B] font-[satoshi] text-center text-2xl font-normal py-7 px-6">
+    What makes our brand different
+  </div>
       <div className="w-full px-8 py-20 lg:px-20">
         {/* Container for each item */}
         <div className="flex flex-wrap justify-between text-left gap-y-12">

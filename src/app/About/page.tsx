@@ -6,7 +6,7 @@ import Link from "next/link";
 const About = () => {
   return (
     <>
-    <div className="w-full h-full px-20 py-12">
+    <div className="w-full  px-20 py-12">
       {/* Top Section */}
       <div className="flex items-center justify-between">
         {/* Left Side */}
@@ -20,7 +20,8 @@ const About = () => {
         {/* Right Side (Button) */}
         <div className="flex justify-end w-1/2">
         <Link href = "/products">
-          <button className="bg-[#F9F9F9] h-[56px] w-[200px] flex justify-center items-center text-black hover:bg-slate-500 mt-8">
+          <button className="bg-[#F9F9F9] h-[56px] w-[200px] flex justify-center items-center
+           text-black hover:bg-slate-500 sm:mt-8">
             View our products
           </button>
           </Link>

@@ -52,5 +52,4 @@ const About2 = () => {
   );
 };
 
-export default About2;
-
+export default About2;

@@ -11,10 +11,10 @@ const Header = () => {
       {/* Header Section */}
       <header className="w-full h-[70px] flex items-center justify-between px-4 md:px-8 fixed top-0 left-0 z-50 shadow-md bg-white">
         {/* Left Section: Search Icon */}
-        <div className="flex items-center">
+        <div className="hidden md:block">
           <CiSearch
             size={24}
-            className="text-gray-600 cursor-pointer hidden md:block"
+            className="text-gray-600 cursor-pointer"
           />
         </div>
 
