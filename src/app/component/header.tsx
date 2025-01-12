@@ -34,7 +34,7 @@ const Header = () => {
           <CiSearch size={24} className="text-gray-600 cursor-pointer md:hidden" />
 
           {/* Shopping Cart Icon with Badge */}
-          <div className="relative">
+          <Link href="/Cart" className="relative">
             <MdOutlineShoppingCart size={24} className="text-gray-600 cursor-pointer" />
             {cartItems > 0 && (
               <span
@@ -44,7 +44,7 @@ const Header = () => {
                 {cartItems}
               </span>
             )}
-          </div>
+          </Link>
 
           {/* User Profile Icon */}
           <FaRegUserCircle size={24} className="text-gray-600 cursor-pointer" />

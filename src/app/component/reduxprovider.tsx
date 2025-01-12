@@ -1,11 +1,14 @@
 // component/reduxprovider.tsx
 "use client";
-import React from 'react';
-import { Provider } from 'react-redux';
-import store from '../Cart/redux/store';
+import React, { ReactNode } from "react";
+import { Provider } from "react-redux";
+import store from "../Cart/redux/store";
 
+interface ReduxProviderProps {
+  children: ReactNode;
+}
 
-const ReduxProvider: React.FC = ({ children } :any) => {
+const ReduxProvider: React.FC<ReduxProviderProps> = ({ children }) => {
   return <Provider store={store}>{children}</Provider>;
 };
 

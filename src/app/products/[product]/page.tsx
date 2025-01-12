@@ -90,12 +90,16 @@ const Page = ({ params }: { params: { product: string } }) => {
 
           {/* Add to Cart Button */}
           <div className="flex justify-center md:justify-start mt-8">
-            <button
-              onClick={handleAddToCart}
-              className="bg-[#2A254B] h-[56px] w-[143px] flex justify-center items-center text-white hover:bg-[#3c3567] transition"
-            >
-              Add to cart
-            </button>
+          <button
+  onClick={() => {
+    handleAddToCart(); 
+    alert("Item added to cart!"); 
+  }}
+  className="bg-[#2A254B] h-[56px] w-[143px] flex justify-center items-center text-white hover:bg-[#3c3567] transition"
+>
+  Add to cart
+</button>
+
           </div>
         </div>
       </div>

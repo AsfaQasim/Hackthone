@@ -3,20 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import { RootState } from "./redux/store"; 
-import { remove } from "./redux/cartslice"; 
-
-interface CartItem {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  name: string;
-}
+import { CartItem, remove } from "./redux/cartslice"; 
 
 const Cartpage: React.FC = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
-
   
   const [isMounted, setIsMounted] = useState(false);
 
@@ -46,7 +37,7 @@ const Cartpage: React.FC = () => {
               <div className="flex-shrink-0">
                 <Image
                   src={item.image}
-                  alt={item.title}
+                  alt={item.title || "Product Image"}
                   height={120}
                   width={120}
                   className="rounded-md object-contain"
@@ -55,9 +46,11 @@ const Cartpage: React.FC = () => {
 
               {/* Content Section */}
               <div className="flex-grow text-center md:text-left">
-                <h5 className="text-lg md:text-xl font-semibold text-gray-800">{item.title}</h5>
+                <h5 className="text-lg md:text-xl font-semibold text-gray-800">
+                  {item.title || "Unnamed Product"}
+                </h5>
                 <h5 className="text-md md:text-lg font-medium text-gray-600 mt-2">
-                  ${typeof item.price === "number" && !isNaN(item.price) ? item.price.toFixed(2) : "0.00"}
+                  {item.price} 
                 </h5>
               </div>
 
