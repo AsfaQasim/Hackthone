@@ -1,100 +1,84 @@
-import React from "react";
+"use client";  
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
-import Link from "next/link";
+import { RootState } from "./redux/store"; 
+import { remove } from "./redux/cartslice"; 
 
-const Cart = () => {
+interface CartItem {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+  name: string;
+}
+
+const Cartpage: React.FC = () => {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+
+  
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const handleRemove = (id: number) => {
+    dispatch(remove(id)); 
+  };
+
+  if (!isMounted) {
+    return null; 
+  }
+
   return (
-    <div className="w-full px-4 md:px-20 bg-[#F9F9F9] py-8">
-      <div>
-        {/* Heading */}
-        <h1 className="text-[28px] md:text-[36px] text-[#2A254B] font-normal mb-6">
-          Your shopping cart
-        </h1>
+    <div className="min-h-screen bg-gray-100 py-8 px-4">
+      <h3 className="text-2xl md:text-3xl font-bold text-center mb-8 text-blue-900">Your Cart</h3>
+      <div className="space-y-6">
+        {cartItems.length > 0 ? (
+          cartItems.map((item: CartItem) => (
+            <div
+              key={item.id}
+              className="flex flex-col md:flex-row items-center bg-white shadow-md rounded-lg p-4 space-y-4 md:space-y-0 md:space-x-4"
+            >
+              {/* Image Section */}
+              <div className="flex-shrink-0">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  height={120}
+                  width={120}
+                  className="rounded-md object-contain"
+                />
+              </div>
 
-        {/* Flex Container Header for Product, Quantity, and Total */}
-        <div className="hidden md:flex justify-between items-center mb-4">
-          <p className="text-[14px] text-gray-600">Product</p>
-          <p className="text-[14px] text-gray-600">Quantity</p>
-          <p className="text-[14px] text-gray-600">Total</p>
-        </div>
+              {/* Content Section */}
+              <div className="flex-grow text-center md:text-left">
+                <h5 className="text-lg md:text-xl font-semibold text-gray-800">{item.title}</h5>
+                <h5 className="text-md md:text-lg font-medium text-gray-600 mt-2">
+                  ${typeof item.price === "number" && !isNaN(item.price) ? item.price.toFixed(2) : "0.00"}
+                </h5>
+              </div>
 
-        {/* First Product */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 md:gap-0">
-          {/* Product Section */}
-          <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto">
-            <Image src="/silk.png" alt="silk" width={109} height={134} />
-            <div>
-              <h1 className="text-lg md:text-xl font-medium mb-2">
-                Graystone vase
-              </h1>
-              <p className="text-[#2A254B] text-[14px] mb-2">
-                A timeless ceramic vase with a tri-color grey glaze.
-              </p>
-              <p className="text-lg font-semibold">£85</p>
+              {/* Button Section */}
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors text-sm md:text-base"
+                onClick={() => handleRemove(item.id)} 
+              >
+                Remove
+              </button>
             </div>
+          ))
+        ) : (
+          <div className="text-center text-gray-600">
+            <h4 className="text-xl md:text-2xl font-semibold">Your cart is empty!</h4>
+            <p className="mt-2">Add items to your cart to see them here.</p>
           </div>
-
-          {/* Quantity Section */}
-          <div className="flex justify-center items-center gap-4">
-            <Image src="/Stepper.png" alt="stepper" width={122} height={46} />
-          </div>
-
-          {/* Total Section */}
-          <div className="text-lg font-semibold text-[#2A254B]">£85</div>
-        </div>
-
-        {/* Second Product */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 md:gap-0">
-          {/* Product Section */}
-          <div className="flex items-center gap-4 md:gap-6 w-full md:w-auto">
-            <Image src="/pro.png" alt="pro" width={109} height={134} />
-            <div>
-              <h1 className="text-lg md:text-xl font-medium mb-2">
-                Basic white vase
-              </h1>
-              <p className="text-[#2A254B] text-[14px] mb-2">
-                Beautiful and simple, this is one for the classics.
-              </p>
-              <p className="text-lg font-semibold">£125</p>
-            </div>
-          </div>
-
-          {/* Quantity Section */}
-          <div className="flex justify-center items-center gap-4">
-            <Image src="/Stepper.png" alt="stepper" width={122} height={46} />
-          </div>
-
-          {/* Total Section */}
-          <div className="text-lg font-semibold text-[#2A254B]">£125</div>
-        </div>
-      </div>
-
-      {/* Divider */}
-      <hr className="w-full border-b-2 border-[#EBE8F4] mb-6" />
-
-      {/* Subtotal Section */}
-      <div className="w-full bg-white border border-[#EBE8F4] p-6 md:p-8">
-        <div className="flex flex-col items-end">
-          <div className="text-right mb-4">
-            <h1 className="font-normal text-[#4E4D93] text-[20px] mb-2">
-              Subtotal
-            </h1>
-            <p className="text-black text-lg font-normal">£210</p>
-            <p className="text-sm text-[#4E4D93]">
-              Taxes and shipping are calculated at checkout
-            </p>
-          </div>
-
-          {/* Checkout Button */}
-          <Link href="/">
-            <button className="bg-[#2A254B] w-full md:w-[172px] h-[56px] text-white text-sm capitalize">
-              Go to checkout
-            </button>
-          </Link>
-        </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default Cart;
+export default Cartpage;

@@ -1,10 +1,33 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import Ceramics from "../../component/ceramics";
 import Brand from "../../component/brand";
 import Club from "../../component/club";
+import { products } from "@/app/Data";
+import { useDispatch } from "react-redux";
 
-const Page = () => {
+
+const Page = ({ params }: { params: { product: string } }) => {
+  const { product } = params;
+  const data = products[Number(product)];
+  const dispatch = useDispatch();
+
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 text-center">
+        <p className="text-2xl text-red-500">
+          Product not found. Please check the product ID or try again later.
+        </p>
+      </div>
+    );
+  }
+
+  const handleAddToCart = () => {
+    console.log("Adding to cart:", data); 
+    dispatch(add(data));
+  };
+
   return (
     <>
       {/* Main Product Section */}
@@ -12,7 +35,7 @@ const Page = () => {
         {/* Image Section */}
         <div className="w-full md:w-1/2 flex justify-center">
           <Image
-            src={"/product.png"}
+            src={data.image}
             alt="product"
             width={721}
             height={759}
@@ -23,17 +46,13 @@ const Page = () => {
         {/* Product Details Section */}
         <div className="w-full md:w-1/2 flex flex-col items-start text-left px-4 sm:px-8 py-8">
           <h1 className="font-normal text-[28px] sm:text-[36px] text-[#2A254B]">
-            The Dandy Chair
+            {data.name}
           </h1>
           <p className="font-normal text-[20px] sm:text-[24px] text-left">
-            £250
+            {data.price}
           </p>
           <p className="text-[#2A254B] font-bold mt-4">Description</p>
-          <p className="text-[#2A254B] mt-4">
-            A timeless design, with premium materials features as one of our most
-            popular and iconic pieces. The dandy chair is perfect for any stylish
-            living space with beech legs and lambskin leather upholstery.
-          </p>
+          <p className="text-[#2A254B] mt-4">{data.description}</p>
           <div className="mt-4">
             <p className="text-[#2A254B]">Premium material</p>
             <p className="text-[#2A254B]">Handmade upholstery</p>
@@ -71,7 +90,10 @@ const Page = () => {
 
           {/* Add to Cart Button */}
           <div className="flex justify-center md:justify-start mt-8">
-            <button className="bg-[#2A254B] h-[56px] w-[143px] flex justify-center items-center text-white">
+            <button
+              onClick={handleAddToCart}
+              className="bg-[#2A254B] h-[56px] w-[143px] flex justify-center items-center text-white hover:bg-[#3c3567] transition"
+            >
               Add to cart
             </button>
           </div>
@@ -89,3 +111,7 @@ const Page = () => {
 };
 
 export default Page;
+function add(data: { id: number; name: string; price: string; image: string; description: string; }): any {
+  throw new Error("Function not implemented.");
+}
+
