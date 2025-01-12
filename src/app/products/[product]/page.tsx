@@ -6,7 +6,7 @@ import Brand from "../../component/brand";
 import Club from "../../component/club";
 import { products } from "@/app/Data";
 import { useDispatch } from "react-redux";
-
+import { add } from "@/app/Cart/redux/cartslice";
 
 const Page = ({ params }: { params: { product: string } }) => {
   const { product } = params;
@@ -25,7 +25,7 @@ const Page = ({ params }: { params: { product: string } }) => {
 
   const handleAddToCart = () => {
     console.log("Adding to cart:", data); 
-    dispatch(add(data));
+    dispatch(add(data)); 
   };
 
   return (
@@ -111,7 +111,3 @@ const Page = ({ params }: { params: { product: string } }) => {
 };
 
 export default Page;
-function add(data: { id: number; name: string; price: string; image: string; description: string; }): any {
-  throw new Error("Function not implemented.");
-}
-
