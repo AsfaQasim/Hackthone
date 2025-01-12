@@ -4,14 +4,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CartItem {
   id: number;
-  title?: string;
+  title: string;
   price: number;
   image: string;
   name: string;
-  descrption:string
-
 }
-
 interface CartState {
   items: CartItem[];
 }
