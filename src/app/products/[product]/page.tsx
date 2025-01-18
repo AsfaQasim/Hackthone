@@ -1,17 +1,56 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Ceramics from "../../component/ceramics";
 import Brand from "../../component/brand";
 import Club from "../../component/club";
-import { products } from "@/app/Data";
+import { client } from "@/sanity/lib/client"; // Import the Sanity client
 import { useDispatch } from "react-redux";
 import { add } from "@/app/Cart/redux/cartslice";
 
+interface Product {
+  name: string;
+  price: string;
+  description: string;
+  image: string;
+  dimension: {
+    depth: string;
+    height: string;
+    width: string;
+  };
+  slug: string;
+}
+
 const Page = ({ params }: { params: { product: string } }) => {
   const { product } = params;
-  const data = products[Number(product)];
+  const [data, setData] = useState<Product | null>(null);
   const dispatch = useDispatch();
+
+  // Fetch data from Sanity based on the product slug
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const query = `*[_type == "product" && slug.current == $slug][0] {
+          name,
+          price,
+          description,
+          "image": image.asset->url,
+          dimension {
+            depth,
+            height,
+            width
+          },
+          slug
+        }`;
+        const productData = await client.fetch(query, { slug: product });
+        setData(productData);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+      }
+    };
+
+    fetchProduct();
+  }, [product]);
 
   if (!data) {
     return (
@@ -24,8 +63,21 @@ const Page = ({ params }: { params: { product: string } }) => {
   }
 
   const handleAddToCart = () => {
-    console.log("Adding to cart:", data); 
-    dispatch(add(data)); 
+    console.log("Adding to cart:", data);
+
+    // Map Product to CartItem
+    const cartItem = {
+      id: data.slug, // Assuming the slug can serve as a unique identifier
+      title: data.name,
+      price: data.price,
+      image: data.image,
+      quantity: 1,
+     name: data.name,
+     description: data.description
+    };
+
+    dispatch(add(cartItem)); // Dispatch the CartItem instead of the Product
+    alert("Item added to cart!");
   };
 
   return (
@@ -65,15 +117,15 @@ const Page = ({ params }: { params: { product: string } }) => {
             <div className="flex flex-wrap justify-start gap-4 mt-4 text-[#2A254B]">
               <div>
                 <p>Height</p>
-                <p className="font-semibold">110cm</p>
+                <p className="font-semibold">{data.dimension.height}</p>
               </div>
               <div>
                 <p>Width</p>
-                <p className="font-semibold">75cm</p>
+                <p className="font-semibold">{data.dimension.width}</p>
               </div>
               <div>
                 <p>Depth</p>
-                <p className="font-semibold">50cm</p>
+                <p className="font-semibold">{data.dimension.depth}</p>
               </div>
               <div>
                 <p>Amount</p>
@@ -90,16 +142,14 @@ const Page = ({ params }: { params: { product: string } }) => {
 
           {/* Add to Cart Button */}
           <div className="flex justify-center md:justify-start mt-8">
-          <button
-  onClick={() => {
-    handleAddToCart(); 
-    alert("Item added to cart!"); 
-  }}
-  className="bg-[#2A254B] h-[56px] w-[143px] flex justify-center items-center text-white hover:bg-[#3c3567] transition"
->
-  Add to cart
-</button>
-
+            <button
+              onClick={() => {
+                handleAddToCart();
+              }}
+              className="bg-[#2A254B] h-[56px] w-[143px] flex justify-center items-center text-white hover:bg-[#3c3567] transition"
+            >
+              Add to cart
+            </button>
           </div>
         </div>
       </div>
