@@ -4,10 +4,13 @@ import Image from "next/image";
 import { IoMdArrowDropdown } from "react-icons/io";
 import Ceramics2 from "../component/ceramics2";
 import { client } from "@/sanity/lib/client";
+import Link from "next/link";
+import product from "../component/product";
 
 interface Product {
+  _id: any;
   name: string;
-  dimension: string;
+  dimensions: string;
   description: string;
   imageUrl: string;
   slug: string;
@@ -20,8 +23,9 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const query = `*[_type == "product"]{
+       _id,
         name,
-        dimension,
+        dimensions{depth , height, width},
         description,
         "imageUrl": image.asset->url,
         "slug": slug.current
@@ -30,6 +34,7 @@ const Products = () => {
       try {
         const data = await client.fetch(query);
         setProducts(data);
+        console.log(data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -37,7 +42,6 @@ const Products = () => {
 
     fetchProducts();
   }, []);
-
   return (
     <>
       <div className="w-full">
@@ -82,27 +86,26 @@ const Products = () => {
           </div>
         </div>
       </div>
-
-      {/* Products Display */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
-        {products.map((product) => (
-          <div key={product.slug} className="p-4 border rounded shadow-lg">
-            <Image
-              src={product.imageUrl}
-              alt={product.name}
-              width={500}
-              height={500}
-              className="w-full h-48 object-cover mb-4"
-            />
-            <h2 className="text-lg font-bold">{product.name}</h2>
-            <p className="text-sm text-gray-600">{product.description}</p>
-            <span className="block mt-2 text-gray-700">
-              Dimensions: {product.dimension}
-            </span>
-          </div>
+        {products.map((product, index) => (
+          <Link href={`products/${product._id}`} key={index}>
+            <div  className="p-4 border rounded shadow-lg">
+              <Image
+                src={product.imageUrl}
+                alt={product.name}
+                width={500}
+                height={500}
+                className="w-full h-48 object-cover mb-4"
+              />
+              <h2 className="text-lg font-bold">{product.name}</h2>
+              <p className="text-sm text-gray-600">{product.description}</p>
+              <span className="block mt-2 text-gray-700">
+                Dimensions: {product.dimensions}
+              </span>
+            </div>
+          </Link>
         ))}
-      </div>
-
+     </div>
       <Ceramics2 />
     </>
   );

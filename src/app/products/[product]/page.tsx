@@ -13,7 +13,7 @@ interface Product {
   price: string;
   description: string;
   image: string;
-  dimension: {
+  dimensions: {
     depth: string;
     height: string;
     width: string;
@@ -30,16 +30,12 @@ const Page = ({ params }: { params: { product: string } }) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const query = `*[_type == "product" && slug.current == $slug][0] {
+        const query = `*[_type == "product" && _id=="${product}"] {
           name,
           price,
           description,
           "image": image.asset->url,
-          dimension {
-            depth,
-            height,
-            width
-          },
+          dimensions{width, height, depth},
           slug
         }`;
         const productData = await client.fetch(query, { slug: product });
@@ -52,6 +48,8 @@ const Page = ({ params }: { params: { product: string } }) => {
     fetchProduct();
   }, [product]);
 
+  console.log("line 55: ",data);
+  
   if (!data) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100 text-center">
@@ -62,12 +60,13 @@ const Page = ({ params }: { params: { product: string } }) => {
     );
   }
 
+
   const handleAddToCart = () => {
     console.log("Adding to cart:", data);
 
     // Map Product to CartItem
     const cartItem = {
-      id: data.slug, // Assuming the slug can serve as a unique identifier
+      id: data.slug, 
       title: data.name,
       price: data.price,
       image: data.image,
@@ -76,7 +75,7 @@ const Page = ({ params }: { params: { product: string } }) => {
      description: data.description
     };
 
-    dispatch(add(cartItem)); // Dispatch the CartItem instead of the Product
+    // dispatch(add(cartItem)); // Dispatch the CartItem instead of the Product
     alert("Item added to cart!");
   };
 
@@ -117,15 +116,15 @@ const Page = ({ params }: { params: { product: string } }) => {
             <div className="flex flex-wrap justify-start gap-4 mt-4 text-[#2A254B]">
               <div>
                 <p>Height</p>
-                <p className="font-semibold">{data.dimension.height}</p>
+                <p className="font-semibold">{data.dimensions.height}</p>
               </div>
               <div>
                 <p>Width</p>
-                <p className="font-semibold">{data.dimension.width}</p>
+                <p className="font-semibold">{data.dimensions.width}</p>
               </div>
               <div>
                 <p>Depth</p>
-                <p className="font-semibold">{data.dimension.depth}</p>
+                <p className="font-semibold">{data.dimensions.depth}</p>
               </div>
               <div>
                 <p>Amount</p>
