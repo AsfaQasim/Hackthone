@@ -5,12 +5,16 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import Ceramics2 from "../component/ceramics2";
 import { client } from "@/sanity/lib/client";
 import Link from "next/link";
-import product from "../component/product";
+
 
 interface Product {
-  _id: any;
+  _id: string | number;
   name: string;
-  dimensions: string;
+  dimensions: {
+    width: string,
+    height: string,
+    depth: string
+  };
   description: string;
   imageUrl: string;
   slug: string;
@@ -25,7 +29,7 @@ const Products = () => {
       const query = `*[_type == "product"]{
        _id,
         name,
-        dimensions{depth , height, width},
+        dimensions,
         description,
         "imageUrl": image.asset->url,
         "slug": slug.current
@@ -100,7 +104,7 @@ const Products = () => {
               <h2 className="text-lg font-bold">{product.name}</h2>
               <p className="text-sm text-gray-600">{product.description}</p>
               <span className="block mt-2 text-gray-700">
-                Dimensions: {product.dimensions}
+                Dimensions: d-{product.dimensions.depth} w-{product.dimensions.width} h-{product.dimensions.height}
               </span>
             </div>
           </Link>

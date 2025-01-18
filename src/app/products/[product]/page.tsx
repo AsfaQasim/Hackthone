@@ -25,29 +25,29 @@ const Page = ({ params }: { params: { product: string } }) => {
   const { product } = params;
   const [data, setData] = useState<Product | null>(null);
   const dispatch = useDispatch();
-
+  
   // Fetch data from Sanity based on the product slug
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const query = `*[_type == "product" && _id=="${product}"] {
+        const query = `*[_type=="product" && _id=="${product}"] {
           name,
           price,
           description,
           "image": image.asset->url,
-          dimensions{width, height, depth},
+          dimensions,
           slug
         }`;
-        const productData = await client.fetch(query, { slug: product });
-        setData(productData);
+        const productData = await client.fetch(query);
+        setData(productData[0]);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
     };
-
+    
     fetchProduct();
   }, [product]);
-
+  
   console.log("line 55: ",data);
   
   if (!data) {
@@ -75,7 +75,7 @@ const Page = ({ params }: { params: { product: string } }) => {
      description: data.description
     };
 
-    // dispatch(add(cartItem)); // Dispatch the CartItem instead of the Product
+    dispatch(add(cartItem));
     alert("Item added to cart!");
   };
 
