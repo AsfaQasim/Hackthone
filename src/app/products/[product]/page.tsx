@@ -25,12 +25,13 @@ const Page = ({ params }: { params: { product: string } }) => {
   const { product } = params;
   const [data, setData] = useState<Product | null>(null);
   const dispatch = useDispatch();
-  
+
   // Fetch data from Sanity based on the product slug
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const query = `*[_type=="product" && _id=="${product}"] {
+        const query = `*[_type=="product"] {
+          _id,
           name,
           price,
           description,
@@ -39,15 +40,17 @@ const Page = ({ params }: { params: { product: string } }) => {
           slug
         }`;
         const productData = await client.fetch(query);
-        setData(productData[0]);
+        const index = productData.findIndex(
+          (item: { _id: string }) => item._id == params.product
+        );
+        setData(productData[index]);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
     };
-    
+
     fetchProduct();
   }, [product]);
-  
 
   if (!data) {
     return (
@@ -59,19 +62,18 @@ const Page = ({ params }: { params: { product: string } }) => {
     );
   }
 
-
   const handleAddToCart = () => {
     console.log("Adding to cart:", data);
 
     // Map Product to CartItem
     const cartItem = {
-      id: data.slug, 
+      id: data.slug,
       title: data.name,
       price: data.price,
       image: data.image,
       quantity: 1,
-     name: data.name,
-     description: data.description
+      name: data.name,
+      description: data.description,
     };
 
     dispatch(add(cartItem));
@@ -99,7 +101,7 @@ const Page = ({ params }: { params: { product: string } }) => {
             {data.name}
           </h1>
           <p className="font-normal text-[20px] sm:text-[24px] text-left">
-             $ {data.price}
+            $ {data.price}
           </p>
           <p className="text-[#2A254B] font-bold mt-4">Description</p>
           <p className="text-[#2A254B] mt-4">{data.description}</p>

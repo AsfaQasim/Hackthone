@@ -29,7 +29,7 @@ const Products = async () => {
   }`;
   const products: Product[] = await client.fetch(query);
 
-  console.log(products);
+  // console.log(products);
 
   return (
     <>
