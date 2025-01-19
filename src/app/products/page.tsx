@@ -6,14 +6,13 @@ import Ceramics2 from "../component/ceramics2";
 import { client } from "@/sanity/lib/client";
 import Link from "next/link";
 
-
 interface Product {
   _id: string | number;
   name: string;
   dimensions: {
-    width: string,
-    height: string,
-    depth: string
+    width: string;
+    height: string;
+    depth: string;
   };
   description: string;
   imageUrl: string;
@@ -27,7 +26,7 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const query = `*[_type == "product"]{
-       _id,
+        _id,
         name,
         dimensions,
         description,
@@ -38,7 +37,7 @@ const Products = () => {
       try {
         console.log("Fetching data from Sanity...");
         const data = await client.fetch(query);
-        
+
         if (data) {
           console.log("Data successfully fetched from Sanity:", data);
           setProducts(data);
@@ -48,10 +47,11 @@ const Products = () => {
       } catch (error) {
         console.error("Error fetching products from Sanity:", error);
       }
-      
+    };
 
     fetchProducts();
   }, []);
+
   return (
     <>
       <div className="w-full">
@@ -97,9 +97,9 @@ const Products = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
-        {products.map((product, index) => (
-          <Link href={`products/${product._id}`} key={index}>
-            <div  className="p-4 border rounded shadow-lg">
+        {products.map((product) => (
+          <Link href={`products/${product._id}`} key={product._id}>
+            <div className="p-4 border rounded shadow-lg">
               <Image
                 src={product.imageUrl}
                 alt={product.name}
@@ -110,12 +110,15 @@ const Products = () => {
               <h2 className="text-lg font-bold">{product.name}</h2>
               <p className="text-sm text-gray-600">{product.description}</p>
               <span className="block mt-2 text-gray-700">
-                Dimensions: d-{product.dimensions.depth} w-{product.dimensions.width} h-{product.dimensions.height}
+                Dimensions: 
+                {product.dimensions.depth || "N/A"} 
+                w-{product.dimensions.width || "N/A"} 
+                h-{product.dimensions.height || "N/A"}
               </span>
             </div>
           </Link>
         ))}
-     </div>
+      </div>
       <Ceramics2 />
     </>
   );
