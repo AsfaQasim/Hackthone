@@ -48,8 +48,7 @@ const Page = ({ params }: { params: { product: string } }) => {
     fetchProduct();
   }, [product]);
   
-  console.log("line 55: ",data);
-  
+
   if (!data) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100 text-center">
@@ -100,7 +99,7 @@ const Page = ({ params }: { params: { product: string } }) => {
             {data.name}
           </h1>
           <p className="font-normal text-[20px] sm:text-[24px] text-left">
-            {data.price}
+             $ {data.price}
           </p>
           <p className="text-[#2A254B] font-bold mt-4">Description</p>
           <p className="text-[#2A254B] mt-4">{data.description}</p>

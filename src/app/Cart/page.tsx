@@ -52,7 +52,7 @@ const Cartpage: React.FC = () => {
                   {item.title || "Unnamed Product"}
                 </h5>
                 <h5 className="text-md md:text-lg font-medium text-gray-600 mt-2">
-                  {item.price}
+                  $  {item.price}
                 </h5>
               </div>
 

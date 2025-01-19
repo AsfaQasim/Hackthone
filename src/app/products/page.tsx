@@ -36,13 +36,19 @@ const Products = () => {
       }`;
 
       try {
+        console.log("Fetching data from Sanity...");
         const data = await client.fetch(query);
-        setProducts(data);
-        console.log(data);
+        
+        if (data) {
+          console.log("Data successfully fetched from Sanity:", data);
+          setProducts(data);
+        } else {
+          console.warn("No data received from Sanity.");
+        }
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching products from Sanity:", error);
       }
-    };
+      
 
     fetchProducts();
   }, []);
