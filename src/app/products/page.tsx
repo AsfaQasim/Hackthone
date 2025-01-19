@@ -1,5 +1,4 @@
-"use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { IoMdArrowDropdown } from "react-icons/io";
 import Ceramics2 from "../component/ceramics2";
@@ -19,38 +18,18 @@ interface Product {
   slug: string;
 }
 
-const Products = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+const Products = async () => {
+  const query = `*[_type == "product"]{
+    _id,
+    name,
+    dimensions,
+    description,
+    "imageUrl": image.asset->url,
+    "slug": slug.current
+  }`;
+  const products: Product[] = await client.fetch(query);
 
-  // Fetch data from Sanity
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const query = `*[_type == "product"]{
-        _id,
-        name,
-        dimensions,
-        description,
-        "imageUrl": image.asset->url,
-        "slug": slug.current
-      }`;
-
-      try {
-        console.log("Fetching data from Sanity...");
-        const data = await client.fetch(query);
-
-        if (data) {
-          console.log("Data successfully fetched from Sanity:", data);
-          setProducts(data);
-        } else {
-          console.warn("No data received from Sanity.");
-        }
-      } catch (error) {
-        console.error("Error fetching products from Sanity:", error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+  console.log(products);
 
   return (
     <>
@@ -110,9 +89,9 @@ const Products = () => {
               <h2 className="text-lg font-bold">{product.name}</h2>
               <p className="text-sm text-gray-600">{product.description}</p>
               <span className="block mt-2 text-gray-700">
-                Dimensions: 
-                {product.dimensions.depth || "N/A"} 
-                w-{product.dimensions.width || "N/A"} 
+                Dimensions:
+                {product.dimensions.depth || "N/A"}
+                w-{product.dimensions.width || "N/A"}
                 h-{product.dimensions.height || "N/A"}
               </span>
             </div>
