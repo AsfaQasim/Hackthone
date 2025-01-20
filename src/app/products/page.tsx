@@ -29,8 +29,6 @@ const Products = async () => {
   }`;
   const products: Product[] = await client.fetch(query);
 
-  // console.log(products);
-
   return (
     <>
       <div className="w-full">

@@ -4,11 +4,12 @@ import Image from "next/image";
 import Ceramics from "../../component/ceramics";
 import Brand from "../../component/brand";
 import Club from "../../component/club";
-import { client } from "@/sanity/lib/client"; // Import the Sanity client
+import { client } from "@/sanity/lib/client";
 import { useDispatch } from "react-redux";
 import { add } from "@/app/Cart/redux/cartslice";
 
 interface Product {
+  _id: string;
   name: string;
   price: string;
   description: string;
@@ -23,10 +24,32 @@ interface Product {
 
 const Page = ({ params }: { params: { product: string } }) => {
   const { product } = params;
+  const [wishlist, setWishlist] = useState<string[]>([]);
   const [data, setData] = useState<Product | null>(null);
   const dispatch = useDispatch();
 
-  // Fetch data from Sanity based on the product slug
+  // Initialize Wishlist from localStorage
+  useEffect(() => {
+    const storedWishlist = localStorage.getItem("wishlist");
+    if (storedWishlist) {
+      setWishlist(JSON.parse(storedWishlist));
+    }
+  }, []);
+
+  // Add/Remove Item from Wishlist
+  const handleAddToWishList = (id: string) => {
+    if (wishlist.includes(id)) {
+      const updatedWishlist = wishlist.filter((itemId) => itemId !== id);
+      setWishlist(updatedWishlist);
+      localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+    } else {
+      const updatedWishlist = [...wishlist, id];
+      setWishlist(updatedWishlist);
+      localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+    }
+  };
+
+  // Fetch Product Details
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -41,7 +64,7 @@ const Page = ({ params }: { params: { product: string } }) => {
         }`;
         const productData = await client.fetch(query);
         const index = productData.findIndex(
-          (item: { _id: string }) => item._id == params.product
+          (item: { _id: string }) => item._id === product
         );
         setData(productData[index]);
       } catch (error) {
@@ -62,10 +85,8 @@ const Page = ({ params }: { params: { product: string } }) => {
     );
   }
 
+  // Add to Cart Functionality
   const handleAddToCart = () => {
-    console.log("Adding to cart:", data);
-
-    // Map Product to CartItem
     const cartItem = {
       id: data.slug,
       title: data.name,
@@ -127,29 +148,44 @@ const Page = ({ params }: { params: { product: string } }) => {
                 <p>Depth</p>
                 <p className="font-semibold">{data.dimensions.depth}</p>
               </div>
-              <div>
-                <p>Amount</p>
-                <Image
-                  src={"/Stepper.png"}
-                  alt="stepper"
-                  width={122}
-                  height={46}
-                  className="mt-2"
-                />
-              </div>
             </div>
           </div>
 
-          {/* Add to Cart Button */}
-          <div className="flex justify-center md:justify-start mt-8">
-            <button
-              onClick={() => {
-                handleAddToCart();
-              }}
-              className="bg-[#2A254B] h-[56px] w-[143px] flex justify-center items-center text-white hover:bg-[#3c3567] transition"
-            >
-              Add to cart
-            </button>
+          <div className="flex gap-4">
+            {/* Add to Cart Button */}
+            <div className="flex justify-center md:justify-start mt-8">
+              <button
+                onClick={handleAddToCart}
+                className="bg-[#2A254B] h-[56px] w-[143px] flex justify-center items-center text-white hover:bg-[#3c3567] transition"
+              >
+                Add to Cart
+              </button>
+            </div>
+
+            {/* Add to Wishlist Button */}
+            <div className="flex justify-center md:justify-start mt-8">
+              <button
+                onClick={() => handleAddToWishList(data._id)}
+                className="bg-[#2A254B] h-[56px] w-fit px-5 flex justify-center items-center text-white hover:bg-[#3c3567] transition"
+              >
+                {/* Heart Icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill={wishlist.includes(data._id) ? "red" : "none"}
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                  />
+                </svg>
+                <span className="ml-2">Wishlist</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

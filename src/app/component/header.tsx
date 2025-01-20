@@ -2,11 +2,10 @@
 import React from "react";
 import { CiSearch } from "react-icons/ci";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { FaRegUserCircle } from "react-icons/fa";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "../Cart/redux/store";
-
+import { FaRegHeart } from "react-icons/fa";
 const Header = () => {
   // Accessing the state using RootState
   const cartItems = useSelector((state: RootState) => state.cart.items.length);
@@ -31,11 +30,17 @@ const Header = () => {
         {/* Right Section: Icons */}
         <div className="flex items-center space-x-4">
           {/* Search Icon for Mobile */}
-          <CiSearch size={24} className="text-gray-600 cursor-pointer md:hidden" />
+          <CiSearch
+            size={24}
+            className="text-gray-600 cursor-pointer md:hidden"
+          />
 
           {/* Shopping Cart Icon with Badge */}
           <Link href="/Cart" className="relative">
-            <MdOutlineShoppingCart size={24} className="text-gray-600 cursor-pointer" />
+            <MdOutlineShoppingCart
+              size={24}
+              className="text-gray-600 cursor-pointer"
+            />
             {cartItems > 0 && (
               <span
                 className="absolute top-[-5px] right-[-5px] bg-red-500 text-white text-xs w-5 h-5
@@ -46,8 +51,10 @@ const Header = () => {
             )}
           </Link>
 
-          {/* User Profile Icon */}
-          <FaRegUserCircle size={24} className="text-gray-600 cursor-pointer" />
+          {/* User heart Icon */}
+          <Link href="/wishlist">
+            <FaRegHeart size={24} className="text-gray-600 cursor-pointer" />
+          </Link>
         </div>
       </header>
 
@@ -56,16 +63,28 @@ const Header = () => {
 
       {/* Navigation Links */}
       <nav className="flex flex-wrap justify-center gap-4 lg:gap-8 py-4">
-        <Link href="/" className="text-[#726E8D] hover:text-black transition-all py-2">
+        <Link
+          href="/"
+          className="text-[#726E8D] hover:text-black transition-all py-2"
+        >
           Home
         </Link>
-        <Link href="/About" className="text-[#726E8D] hover:text-black transition-all py-2">
+        <Link
+          href="/About"
+          className="text-[#726E8D] hover:text-black transition-all py-2"
+        >
           About
         </Link>
-        <Link href="/products" className="text-[#726E8D] hover:text-black transition-all py-2">
+        <Link
+          href="/products"
+          className="text-[#726E8D] hover:text-black transition-all py-2"
+        >
           Products
         </Link>
-        <Link href="/Cart" className="text-[#726E8D] hover:text-black transition-all py-2">
+        <Link
+          href="/Cart"
+          className="text-[#726E8D] hover:text-black transition-all py-2"
+        >
           Cart
         </Link>
       </nav>
@@ -73,4 +92,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header; 
