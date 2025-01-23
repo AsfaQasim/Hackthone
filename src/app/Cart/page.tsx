@@ -97,7 +97,7 @@ const Cartpage: React.FC = () => {
                 </span>
               </div>
               <button
-                className="bg-[#2A254B] text-white w-full py-3 rounded-lg mt-6 text-lg font-semibold hover:bg-green-600 transition-colors"
+                className="bg-[#2A254B] text-white w-full py-3 rounded-lg mt-6 text-lg font-semibold hover:bg-slate-600 transition-colors"
                 onClick={handleCheckout}
               >
                 Proceed to Checkout
