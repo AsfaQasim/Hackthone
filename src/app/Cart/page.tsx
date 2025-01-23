@@ -5,6 +5,7 @@ import Image from "next/image";
 import { RootState } from "./redux/store";
 import { CartItem, remove } from "./redux/cartslice";
 
+
 const Cartpage: React.FC = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -15,12 +16,26 @@ const Cartpage: React.FC = () => {
     setIsMounted(true);
   }, []);
 
-  const handleRemove = (id: number) => {
+  const handleRemove = (id: number | string) => {
+    console.log("Removing item with ID:", id);
     dispatch(remove(id));
   };
 
+  // Calculate Total Price
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + parseFloat(item.price.toString()),
+    0
+  );
+
+  const handleCheckout = () => {
+    console.log("Proceeding to Checkout...");
+    alert(`Total: $${totalPrice.toFixed(2)}. Proceeding to checkout!`);
+    // Redirect to checkout page if required
+    // router.push("/checkout");
+  };
+
   if (!isMounted) {
-    return null;
+    return null; // Prevent server-side rendering issues
   }
 
   return (
@@ -30,42 +45,67 @@ const Cartpage: React.FC = () => {
       </h3>
       <div className="space-y-6">
         {cartItems.length > 0 ? (
-          cartItems.map((item: CartItem) => (
-            <div
-              key={item.id}
-              className="flex flex-col md:flex-row items-center bg-white shadow-md rounded-lg p-4 space-y-4 md:space-y-0 md:space-x-4"
-            >
-              {/* Image Section */}
-              <div className="flex-shrink-0">
-                <Image
-                  src={item.image}
-                  alt={item.title || "Product Image"}
-                  height={120}
-                  width={120}
-                  className="rounded-md object-contain"
-                />
-              </div>
-
-              {/* Content Section */}
-              <div className="flex-grow text-center md:text-left">
-                <h5 className="text-lg md:text-xl font-semibold text-gray-800">
-                  {item.title || "Unnamed Product"}
-                </h5>
-                <h5 className="text-md md:text-lg font-medium text-gray-600 mt-2">
-                  $  {item.price}
-                </h5>
-              </div>
-
-              {/* Button Section */}
-              <button
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors text-sm md:text-base"
-                onClick={() => handleRemove(item.id as number)}
+          <>
+            {/* Cart Items */}
+            {cartItems.map((item: CartItem) => (
+              <div
+                key={item._id}
+                className="flex flex-col md:flex-row items-center bg-white shadow-md rounded-lg p-4 space-y-4 md:space-y-0 md:space-x-4"
               >
-                Remove
+                {/* Image Section */}
+                <div className="flex-shrink-0">
+                  <Image
+                    src={item.image}
+                    alt={item.title || "Product Image"}
+                    height={120}
+                    width={120}
+                    className="rounded-md object-contain"
+                  />
+                </div>
+
+                {/* Content Section */}
+                <div className="flex-grow text-center md:text-left">
+                  <h5 className="text-lg md:text-xl font-semibold text-gray-800">
+                    {item.title || "Unnamed Product"}
+                  </h5>
+                  <h5 className="text-md md:text-lg font-medium text-gray-600 mt-2">
+                    $ {item.price}
+                  </h5>
+                </div>
+
+                {/* Button Section */}
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors text-sm md:text-base"
+                  onClick={() => handleRemove(item._id)}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+
+            {/* Checkout Section */}
+            <div className="bg-white shadow-md rounded-lg p-6 mt-8">
+              <h4 className="text-xl md:text-2xl font-semibold text-gray-800">
+                Cart Summary
+              </h4>
+              <div className="flex justify-between items-center mt-4">
+                <span className="text-lg font-medium text-gray-600">
+                  Total Price:
+                </span>
+                <span className="text-xl font-bold text-blue-900">
+                  $ {totalPrice.toFixed(2)}
+                </span>
+              </div>
+              <button
+                className="bg-[#2A254B] text-white w-full py-3 rounded-lg mt-6 text-lg font-semibold hover:bg-green-600 transition-colors"
+                onClick={handleCheckout}
+              >
+                Proceed to Checkout
               </button>
             </div>
-          ))
+          </>
         ) : (
+          // Empty Cart Message
           <div className="text-center text-gray-600">
             <h4 className="text-xl md:text-2xl font-semibold">
               Your cart is empty!

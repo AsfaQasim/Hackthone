@@ -88,7 +88,7 @@ const Page = ({ params }: { params: { product: string } }) => {
   // Add to Cart Functionality
   const handleAddToCart = () => {
     const cartItem = {
-      id: data.slug,
+      _id: data.slug,
       title: data.name,
       price: data.price,
       image: data.image,

@@ -3,7 +3,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CartItem {
-  id: number | string;
+  _id: number | string;
   title: string;
   price: number | string;
   image: string;
@@ -23,9 +23,18 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     // Remove item by ID
-    remove(state, action: PayloadAction<number>) {
-      state.items = state.items.filter((item) => item.id !== action.payload);
+    remove(state, action: PayloadAction<number | string>) {
+      console.log("Removing item with _id:", action.payload);
+      console.log("Current cart items before removal:", state.items);
+    
+      state.items = state.items.filter(
+        (item) => String(item._id) !== String(action.payload)
+      );
+    
+      console.log("Updated cart items after removal:", state.items);
     },
+    
+    
     // Add item to the cart
     add(state, action: PayloadAction<CartItem>) {
       state.items.push(action.payload);
