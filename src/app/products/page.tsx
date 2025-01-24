@@ -28,7 +28,7 @@ const Products = async () => {
     "slug": slug.current
   }`;
   const products: Product[] = await client.fetch(query);
-  console.log(products)
+  // console.log(products)
 
   return (
     <>

@@ -5,7 +5,6 @@ import Image from "next/image";
 import { RootState } from "./redux/store";
 import { CartItem, remove } from "./redux/cartslice";
 
-
 const Cartpage: React.FC = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -15,10 +14,10 @@ const Cartpage: React.FC = () => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
+  
   const handleRemove = (id: number | string) => {
     console.log("Removing item with ID:", id);
-    dispatch(remove(id));
+    dispatch(remove(id)); // Redux action with proper id
   };
 
   // Calculate Total Price

@@ -28,7 +28,7 @@ const cartSlice = createSlice({
       console.log("Current cart items before removal:", state.items);
     
       state.items = state.items.filter(
-        (item) => String(item._id) !== String(action.payload)
+        (item) => `${item._id}` !== `${action.payload}` // Ensure consistent type comparison
       );
     
       console.log("Updated cart items after removal:", state.items);

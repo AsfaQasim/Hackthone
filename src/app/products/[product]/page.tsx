@@ -7,6 +7,7 @@ import Club from "../../component/club";
 import { client } from "@/sanity/lib/client";
 import { useDispatch } from "react-redux";
 import { add } from "@/app/Cart/redux/cartslice";
+import Loader from "@/app/component/slider";
 
 interface Product {
   _id: string;
@@ -53,7 +54,7 @@ const Page = ({ params }: { params: { product: string } }) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const query = `*[_type=="product"] {
+        const query = `*[_type=="product" && _id == $ids] {
           _id,
           name,
           price,
@@ -62,29 +63,24 @@ const Page = ({ params }: { params: { product: string } }) => {
           dimensions,
           slug
         }`;
-        const productData = await client.fetch(query);
-        const index = productData.findIndex(
-          (item: { _id: string }) => item._id === product
-        );
-        setData(productData[index]);
+        const productData = await client.fetch(query, {ids: params.product})
+        console.log(productData);
+        setData(productData[0]);
       } catch (error) {
         console.error("Error fetching product:", error);
       }
     };
 
     fetchProduct();
-  }, [product]);
-
-  if (!data) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100 text-center">
-        <p className="text-2xl text-red-500">
-          Product not found. Please check the product ID or try again later.
-        </p>
-      </div>
-    );
-  }
-
+ }, [product]);
+ if (!data) {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Loader />
+    </div>
+  );
+}
+<Loader/>
   // Add to Cart Functionality
   const handleAddToCart = () => {
     const cartItem = {
