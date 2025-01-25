@@ -3,38 +3,42 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import { RootState } from "./redux/store";
-import { CartItem, remove } from "./redux/cartslice";
+import { remove } from "./redux/cartslice";
+import { CartItem } from "./redux/cartslice";
 
 const Cartpage: React.FC = () => {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const cartItems = useSelector((state: RootState) => state.cart.items); // Correctly using useSelector to get cart items
 
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  
-  const handleRemove = (id: number | string) => {
-    console.log("Removing item with ID:", id);
-    dispatch(remove(id)); // Redux action with proper id
+
+  // Remove item from the cart
+  const handleRemove = (id: string) => {
+    console.log("Dispatching remove with ID:", id);
+    dispatch(remove(id));
   };
 
-  // Calculate Total Price
+  // Calculate total price
   const totalPrice = cartItems.reduce(
     (total, item) => total + parseFloat(item.price.toString()),
     0
   );
 
+  // Handle checkout action
   const handleCheckout = () => {
     console.log("Proceeding to Checkout...");
     alert(`Total: $${totalPrice.toFixed(2)}. Proceeding to checkout!`);
-    // Redirect to checkout page if required
+    // Redirect to checkout page (uncomment and adjust if required)
     // router.push("/checkout");
   };
 
+  // Prevent server-side rendering issues
   if (!isMounted) {
-    return null; // Prevent server-side rendering issues
+    return null;
   }
 
   return (
@@ -45,7 +49,7 @@ const Cartpage: React.FC = () => {
       <div className="space-y-6">
         {cartItems.length > 0 ? (
           <>
-            {/* Cart Items */}
+            {/* Render Cart Items */}
             {cartItems.map((item: CartItem) => (
               <div
                 key={item._id}
@@ -54,7 +58,7 @@ const Cartpage: React.FC = () => {
                 {/* Image Section */}
                 <div className="flex-shrink-0">
                   <Image
-                    src={item.image}
+                    src={item.image || "/default-image.jpg"}
                     alt={item.title || "Product Image"}
                     height={120}
                     width={120}
@@ -68,14 +72,14 @@ const Cartpage: React.FC = () => {
                     {item.title || "Unnamed Product"}
                   </h5>
                   <h5 className="text-md md:text-lg font-medium text-gray-600 mt-2">
-                    $ {item.price}
+                    ${item.price}
                   </h5>
                 </div>
 
-                {/* Button Section */}
+                {/* Remove Button */}
                 <button
                   className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors text-sm md:text-base"
-                  onClick={() => handleRemove(item._id)}
+                  onClick={() => handleRemove(item._id)} // Pass the item _id correctly
                 >
                   Remove
                 </button>
@@ -92,7 +96,7 @@ const Cartpage: React.FC = () => {
                   Total Price:
                 </span>
                 <span className="text-xl font-bold text-blue-900">
-                  $ {totalPrice.toFixed(2)}
+                  ${totalPrice.toFixed(2)}
                 </span>
               </div>
               <button

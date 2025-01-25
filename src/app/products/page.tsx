@@ -8,13 +8,14 @@ import Link from "next/link";
 interface Product {
   _id: string | number;
   name: string;
+  price: number | string; 
   dimensions: {
     width: string;
     height: string;
     depth: string;
   };
   description: string;
-  imageUrl: string;
+  image: string;
   slug: string;
 }
 
@@ -23,12 +24,13 @@ const Products = async () => {
     _id,
     name,
     dimensions,
+    price,
     description,
-    "imageUrl": image.asset->url,
+    "image": image.asset->url,
     "slug": slug.current
   }`;
+  
   const products: Product[] = await client.fetch(query);
-  // console.log(products)
 
   return (
     <>
@@ -74,12 +76,14 @@ const Products = async () => {
           </div>
         </div>
       </div>
+
+      {/* Products List */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
         {products.map((product) => (
           <Link href={`products/${product._id}`} key={product._id}>
             <div className="p-4 border rounded shadow-lg">
               <Image
-                src={product.imageUrl}
+                src={product.image}
                 alt={product.name}
                 width={500}
                 height={500}
@@ -89,14 +93,15 @@ const Products = async () => {
               <p className="text-sm text-gray-600">{product.description}</p>
               <span className="block mt-2 text-gray-700">
                 Dimensions:
-                {product.dimensions.depth || "N/A"}
-                w-{product.dimensions.width || "N/A"}
-                h-{product.dimensions.height || "N/A"}
+                {product.dimensions.depth || "N/A"} w-
+                {product.dimensions.width || "N/A"} h-
+                {product.dimensions.height || "N/A"}
               </span>
             </div>
           </Link>
         ))}
       </div>
+
       <Ceramics2 />
     </>
   );

@@ -1,13 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Ceramics from "../../component/ceramics";
+import Ceramics from "../../component/ceramics"; // Assuming components are correct
 import Brand from "../../component/brand";
 import Club from "../../component/club";
-import { client } from "@/sanity/lib/client";
-import { useDispatch } from "react-redux";
-import { add } from "@/app/Cart/redux/cartslice";
-import Loader from "@/app/component/slider";
+import { client } from "@/sanity/lib/client"; // Correct client import
+import { useDispatch } from "react-redux"; // For managing the cart
+import Loader from "@/app/component/slider"; // Assuming loader is correct
+import { add } from "@/app/Cart/redux/cartslice"; // Cart action import
 
 interface Product {
   _id: string;
@@ -63,7 +63,7 @@ const Page = ({ params }: { params: { product: string } }) => {
           dimensions,
           slug
         }`;
-        const productData = await client.fetch(query, {ids: params.product})
+        const productData = await client.fetch(query, { ids: product }); // Fixed product fetch
         console.log(productData);
         setData(productData[0]);
       } catch (error) {
@@ -72,24 +72,29 @@ const Page = ({ params }: { params: { product: string } }) => {
     };
 
     fetchProduct();
- }, [product]);
- if (!data) {
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Loader />
-    </div>
-  );
-}
-<Loader/>
-  // Add to Cart Functionality
+  }, [product]);
+
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <Loader />
+      </div>
+    );
+  }
+
   const handleAddToCart = () => {
+    if (!data) {
+      alert("Product data is not available.");
+      return;
+    }
+
     const cartItem = {
       _id: data.slug,
       title: data.name,
       price: data.price,
       image: data.image,
       quantity: 1,
-      name: data.name,
+      name: data.name, 
       description: data.description,
     };
 
@@ -109,6 +114,7 @@ const Page = ({ params }: { params: { product: string } }) => {
             width={721}
             height={759}
             className="object-contain"
+            priority 
           />
         </div>
 
