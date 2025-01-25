@@ -33,17 +33,21 @@ const cartSlice = createSlice({
     // Remove item from cart
     remove: (state, action: PayloadAction<string>) => {
       console.log("Removing item with ID:", action.payload);
-      console.log("Current items in cart:", state.items);
+      // Find the index of the item
       const index = state.items.findIndex(item => item._id === action.payload);
+      
+      // If item is found, remove it
       if (index !== -1) {
-        state.items.splice(index, 1); // Remove the item
-        console.log("Item removed, updated cart:", state.items);
+        // Use slice to return a new array without mutating the state directly
+        state.items = [
+          ...state.items.slice(0, index),
+          ...state.items.slice(index + 1),
+        ];
+        console.log("Updated cart items:", state.items);
       } else {
-        console.log("Item not found");
+        console.log("Item not found for removal:", action.payload);
       }
-    }
-    
-    
+    },
   },
 });
 

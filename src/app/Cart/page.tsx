@@ -18,9 +18,10 @@ const Cartpage: React.FC = () => {
 
   // Remove item from the cart
   const handleRemove = (id: string) => {
-    console.log("Dispatching remove with ID:", id);
-    dispatch(remove(id));
+    console.log("Dispatching remove for ID:", id);
+    dispatch(remove(id));  // Dispatch the remove action with ID
   };
+  
 
   // Calculate total price
   const totalPrice = cartItems.reduce(
