@@ -11,7 +11,8 @@ const About = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between space-y-4 md:space-y-0">
           {/* Left Side */}
           <div className="md:w-1/2">
-            <h1 className="font-normal text-[#2A254B] text-[24px] sm:text-[32px] md:text-[30px] leading-tight">
+            <h1 className="font-normal text-[#2A254B] text-[24px] sm:text-[32px] md:text-[30px]
+             leading-tight">
               A brand built on the love of craftmanship, quality and outstanding
               customer service
             </h1>

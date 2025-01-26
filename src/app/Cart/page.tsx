@@ -8,7 +8,7 @@ import { CartItem } from "./redux/cartslice";
 
 const Cartpage: React.FC = () => {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state: RootState) => state.cart.items); // Correctly using useSelector to get cart items
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -18,10 +18,9 @@ const Cartpage: React.FC = () => {
 
   // Remove item from the cart
   const handleRemove = (id: string) => {
-    console.log("Dispatching remove for ID:", id);
-    dispatch(remove(id));  // Dispatch the remove action with ID
+    console.log("[Component] Dispatching remove for ID:", id);
+    dispatch(remove(id));
   };
-  
 
   // Calculate total price
   const totalPrice = cartItems.reduce(
@@ -33,10 +32,8 @@ const Cartpage: React.FC = () => {
   const handleCheckout = () => {
     console.log("Proceeding to Checkout...");
     alert(`Total: $${totalPrice.toFixed(2)}. Proceeding to checkout!`);
-    // Redirect to checkout page (uncomment and adjust if required)
-    // router.push("/checkout");
-  };
-
+   
+};
   // Prevent server-side rendering issues
   if (!isMounted) {
     return null;
@@ -79,8 +76,8 @@ const Cartpage: React.FC = () => {
 
                 {/* Remove Button */}
                 <button
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors text-sm md:text-base"
-                  onClick={() => handleRemove(item._id)} // Pass the item _id correctly
+                  className="bg-[#2A254B] text-white px-4 py-2 rounded hover:bg-[#3c3567] transition-colors text-sm md:text-base"
+                  onClick={() => handleRemove(String(item._id))} // Ensure ID is a string
                 >
                   Remove
                 </button>

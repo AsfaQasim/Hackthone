@@ -8,7 +8,7 @@ import Link from "next/link";
 interface Product {
   _id: string | number;
   name: string;
-  price: number | string; 
+  price: number | string;
   dimensions: {
     width: string;
     height: string;
@@ -29,7 +29,7 @@ const Products = async () => {
     "image": image.asset->url,
     "slug": slug.current
   }`;
-  
+
   const products: Product[] = await client.fetch(query);
 
   return (

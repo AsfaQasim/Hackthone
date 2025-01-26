@@ -1,8 +1,10 @@
+"use client";
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // CartItem interface
 export interface CartItem {
-  _id: string;
+  _id: string; // Enforce string type
   title: string;
   price: number | string;
   image: string;
@@ -28,24 +30,28 @@ const cartSlice = createSlice({
   reducers: {
     // Add item to cart
     add: (state, action: PayloadAction<CartItem>) => {
-      state.items.push(action.payload);
+      // Ensure _id is always a string
+      const newItem = { 
+        ...action.payload, 
+        _id: String(action.payload._id) 
+      };
+      state.items.push(newItem);
     },
+
     // Remove item from cart
     remove: (state, action: PayloadAction<string>) => {
-      console.log("Removing item with ID:", action.payload);
+      console.log("[Redux] Removing item with ID:", action.payload);
+      console.log("[Redux] Current cart items:", state.items);
+
       // Find the index of the item
       const index = state.items.findIndex(item => item._id === action.payload);
-      
-      // If item is found, remove it
+
       if (index !== -1) {
-        // Use slice to return a new array without mutating the state directly
-        state.items = [
-          ...state.items.slice(0, index),
-          ...state.items.slice(index + 1),
-        ];
-        console.log("Updated cart items:", state.items);
+        // Remove item using splice (Immer-friendly)
+        state.items.splice(index, 1);
+        console.log("[Redux] Item removed. Updated cart:", state.items);
       } else {
-        console.log("Item not found for removal:", action.payload);
+        console.log("[Redux] Item not found for removal:", action.payload);
       }
     },
   },

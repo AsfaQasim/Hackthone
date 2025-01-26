@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { products } from '../Data';
 
 interface CeramicsProps {
-  heading?: string; // Marked as optional
+  heading?: string; 
 }
 
 const Ceramics2: React.FC<CeramicsProps> = () => {

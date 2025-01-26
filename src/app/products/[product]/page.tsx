@@ -6,7 +6,7 @@ import Brand from "../../component/brand";
 import Club from "../../component/club";
 import { client } from "@/sanity/lib/client"; // Correct client import
 import { useDispatch } from "react-redux"; // For managing the cart
-import Loader from "@/app/component/slider"; // Assuming loader is correct
+import Loader from "@/app/component/loader"; // Assuming loader is correct
 import { add } from "@/app/Cart/redux/cartslice"; // Cart action import
 
 interface Product {
@@ -127,7 +127,7 @@ const Page = ({ params }: { params: { product: string } }) => {
             $ {data.price}
           </p>
           <p className="text-[#2A254B] font-bold mt-4">Description</p>
-          <p className="text-[#2A254B] mt-4">{data.description}</p>
+          <p className="text-[#2A254B] mt-4 font-[clash] ">{data.description}</p>
           <div className="mt-4">
             <p className="text-[#2A254B]">Premium material</p>
             <p className="text-[#2A254B]">Handmade upholstery</p>
@@ -158,7 +158,8 @@ const Page = ({ params }: { params: { product: string } }) => {
             <div className="flex justify-center md:justify-start mt-8">
               <button
                 onClick={handleAddToCart}
-                className="bg-[#2A254B] h-[56px] w-[143px] flex justify-center items-center text-white hover:bg-[#3c3567] transition"
+                className="bg-[#2A254B] h-[56px] w-[143px] flex justify-center items-center text-white
+                 hover:bg-[#3c3567] transition"
               >
                 Add to Cart
               </button>
