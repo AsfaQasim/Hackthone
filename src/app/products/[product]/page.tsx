@@ -9,10 +9,13 @@ import { useDispatch } from "react-redux"; // For managing the cart
 import Loader from "@/app/component/loader"; // Assuming loader is correct
 import { add } from "@/app/Cart/redux/cartslice"; // Cart action import
 
-interface Product {
+export interface Product {
+  quantity: number;
+  productName: string;
+  inventory: number;
   _id: string;
   name: string;
-  price: string;
+  price: number;
   description: string;
   image: string;
   dimensions: {
@@ -59,11 +62,12 @@ const Page = ({ params }: { params: { product: string } }) => {
           name,
           price,
           description,
+          quantity,
           "image": image.asset->url,
           dimensions,
           slug
         }`;
-        const productData = await client.fetch(query, { ids: product }); // Fixed product fetch
+        const productData = await client.fetch(query, { ids: product }); 
         console.log(productData);
         setData(productData[0]);
       } catch (error) {
