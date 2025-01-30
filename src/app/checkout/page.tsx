@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { RootState } from "../Cart/redux/store";
+import { client } from "@/sanity/lib/client";
 
 export default function CheckoutPage() {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -17,26 +18,53 @@ export default function CheckoutPage() {
     phone: "",
     email: "",
   });
-  const [] = useState({});
+
   const subtotal = cartItems.reduce(
-    (total: number, item: { price: number; quantity: number; }) => total + item.price * (item.quantity || 1),
+    (total: number, item: { price: number; quantity: number }) =>
+      total + item.price * (item.quantity || 1),
     0
   );
-
-  const handlePlaceOrder = () => {
-    // Simple form validation
-    if (!formValues.firstName || !formValues.lastName || !formValues.address) {
-      toast.error("Please fill in all the required fields.");
-      return;
-    }
-    toast.success("Order placed successfully!");
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValues({
       ...formValues,
       [e.target.id]: e.target.value,
     });
+  };
+
+  const handlePlaceOrder = async () => {
+    // Validation check
+    if (!formValues.firstName || !formValues.lastName || !formValues.address) {
+      toast.error("Please fill in all the required fields.");
+      return;
+    }
+
+    const orderData = {
+      _type: "order",
+      firstName: formValues.firstName,
+      lastName: formValues.lastName,
+      address: formValues.address,
+      city: formValues.city,
+      zipCode: formValues.zipCode,
+      phone: formValues.phone,
+      email: formValues.email,
+      cartItems: cartItems.map((item) => ({
+        _type: "reference",
+        _ref: item._id,
+      })),
+      total: subtotal, // subtotal ko as total use karein
+      discount: 0, // Discount agar nahi hai toh default 0
+      orderDate: new Date().toString(), // Correct syntax
+    };
+
+    try {
+      await client.create(orderData);
+      localStorage.removeItem("appliedDiscount");
+      toast.success("Order placed successfully!");
+    } catch (error) {
+      console.error("Error creating order:", error);
+      toast.error("Failed to place order. Please try again.");
+    }
   };
 
   return (
@@ -139,7 +167,7 @@ export default function CheckoutPage() {
               />
             </div>
             <button
-              className="bg-[#2A254B]  text-white w-full py-3 rounded-lg mt-4 hover:bg-[#3c3567]"
+              className="bg-[#2A254B] text-white w-full py-3 rounded-lg mt-4 hover:bg-[#3c3567]"
               onClick={handlePlaceOrder}
             >
               Place Order
