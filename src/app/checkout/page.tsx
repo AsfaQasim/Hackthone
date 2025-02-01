@@ -6,9 +6,10 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { RootState } from "../Cart/redux/store";
 import { client } from "@/sanity/lib/client";
+import { CartItem } from "../Cart/redux/cartslice";
 
 export default function CheckoutPage() {
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const cartItems: CartItem[] = useSelector((state: RootState) => state.cart.items);
   const [formValues, setFormValues] = useState({
     firstName: "",
     lastName: "",
@@ -21,7 +22,7 @@ export default function CheckoutPage() {
 
   // Calculate subtotal
   const subtotal = cartItems.reduce(
-    (total: number, item: { price: number; quantity: number }) =>
+    (total: number, item: CartItem) =>
       total + item.price * (item.quantity || 1),
     0
   );
@@ -32,26 +33,36 @@ export default function CheckoutPage() {
       [e.target.id]: e.target.value,
     });
   };
+
   const handlePlaceOrder = async () => {
     // Validation check
     if (!formValues.firstName || !formValues.lastName || !formValues.address) {
       toast.error("Please fill in all the required fields.");
       return;
     }
-  
+
+    // Log cartItems for debugging
+    console.log("Cart Items:", JSON.stringify(cartItems, null, 2));
+
     // Prepare cartItems with valid references
     const cartItemsWithReferences = cartItems.map((item) => {
-      if (!item._id || (typeof item._id !== 'string' && typeof item._id !== 'number')) {
-        console.error("Invalid _id in cart item:", item);
-        toast.error("Invalid product in cart. Please try again.");
-        throw new Error("Invalid product in cart.");
+      // Ensure item._id is a string
+      const itemId = item._id;
+
+      if (!itemId) {
+         console.error("Missing _id in cart item:", item);
+         toast.error("Invalid product in cart. Please try again.");
+         throw new Error("Invalid product in cart.");
       }
+
       return {
         _type: "reference",
-        _ref: String(item._id), 
+        _ref: itemId, // Use the _id directly
       };
     });
-  
+
+    console.log("Cart Items with References:", JSON.stringify(cartItemsWithReferences, null, 2));
+
     const orderData = {
       _type: "order",
       firstName: formValues.firstName,
@@ -66,7 +77,9 @@ export default function CheckoutPage() {
       discount: 0,
       orderDate: new Date().toISOString(),
     };
-  
+
+    console.log("Order Data:", JSON.stringify(orderData, null, 2));
+
     try {
       const response = await client.create(orderData);
       console.log("Order created successfully:", response);
@@ -77,7 +90,6 @@ export default function CheckoutPage() {
       toast.error("Failed to place order. Please try again.");
     }
   };
-  
 
   return (
     <div className="min-h-screen bg-gray-50">

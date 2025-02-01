@@ -1,14 +1,14 @@
-"use client";
-import React, { ReactNode } from "react";
-import { Provider } from "react-redux";
-import store from "./store";
+// pages/_app.tsx
+import { Provider } from 'react-redux';
+import type { AppProps } from 'next/app';
+import store from './store';
 
-interface ProviderProps {
-  children: ReactNode;
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <Provider store={store}>
+      <Component {...pageProps} />
+    </Provider>
+  );
 }
 
-const StoreProvider: React.FC<ProviderProps> = ({ children }) => {
-  return <Provider store={store}>{children}</Provider>;
-};
-
-export default StoreProvider;
+export default MyApp;
