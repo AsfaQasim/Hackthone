@@ -2,17 +2,22 @@ import axios from "axios";
 import slugify from "slugify";
 import { createClient } from "@sanity/client";
 
-// Create the Sanity client with hardcoded credentials
+// Create the Sanity client
 const client = createClient({
-  projectId: "6126dq9t", // Replace with your Sanity project ID
-  dataset: "production", // Replace with your dataset name (e.g., 'production')
-  apiVersion: "2023-01-01", // Use the appropriate API version
-  token: "skyxo250iDhKhgeoh1ebLdkWP2lgbBRdIEt9W6j7zbkQiZu3gs7z4F4EufG3JfenAgPM9ni7VyDivCFo2oovudaoA3iM67dvyv7E5KZr2kYx6hTREVmbivfX3yxsyo4xem3i8BQb8C49UkTeXNGqGwxFDHoIhE335mJJcs1Z03bUpVUhliOH", // Replace with your Sanity token
-  useCdn: true, // Use CDN for faster data fetching
+  projectId: "6126dq9t", 
+  dataset: "production",
+  apiVersion: "2023-01-01", 
+  token: "your-sanity-token-here", // Replace with a valid token
+  useCdn: true, 
 });
 
-// Function to upload an image to Sanity
+// Upload image to Sanity
 async function uploadImageToSanity(imageUrl) {
+  if (!imageUrl) {
+    console.error("❌ Image URL is missing");
+    return null;
+  }
+
   try {
     const response = await axios.get(imageUrl, {
       responseType: "arraybuffer",
@@ -32,12 +37,19 @@ async function uploadImageToSanity(imageUrl) {
   }
 }
 
-// Function to create or fetch a category
+// Create or fetch a category
 async function createCategory(category, counter) {
+  if (!category?.name) {
+    console.error("❌ Category name is missing");
+    return null;
+  }
+
+  const slug = slugify(category.name, { lower: true, strict: true });
+
   try {
     const categoryExist = await client.fetch(
       `*[_type=="category" && slug.current==$slug][0]`,
-      { slug: category.slug }
+      { slug }
     );
 
     if (categoryExist) {
@@ -47,11 +59,11 @@ async function createCategory(category, counter) {
 
     const catObj = {
       _type: "category",
-      _id: `${category.slug}-${counter}`,
+      _id: `${slug}-${counter}`,
       name: category.name,
       slug: {
         _type: "slug",
-        current: category.slug,
+        current: slug,
       },
     };
 
@@ -64,7 +76,7 @@ async function createCategory(category, counter) {
   }
 }
 
-// Main function to import data
+// Import data
 async function importData() {
   try {
     const response = await axios.get("https://hackathon-apis.vercel.app/api/products");
@@ -73,67 +85,76 @@ async function importData() {
     let counter = 1;
 
     for (const product of products) {
-      let imageRef = null;
-      let catRef = null;
+      try {
+        if (!product.name || !product.price) {
+          console.error("❌ Product name or price is missing:", product);
+          continue;
+        }
 
-      if (product.image) {
-        imageRef = await uploadImageToSanity(product.image);
-      }
+        let imageRef = null;
+        let catRef = null;
 
-      if (product.category.name) {
-        catRef = await createCategory(product.category, counter);
-      }
+        if (product.image) {
+          imageRef = await uploadImageToSanity(product.image);
+        }
 
-      const sanityProduct = {
-        _id: `product-${counter}`,
-        _type: "product",
-        name: product.name,
-        slug: {
-          _type: "slug",
-          current: slugify(product.name || "default-product", {
-            lower: true,
-            strict: true,
-          }),
-        },
-        price: product.price,
-        category: catRef
-          ? {
-              _type: "reference",
-              _ref: catRef,
-            }
-          : undefined,
-        tags: product.tags || [],
-        quantity: 50,
-        image: imageRef
-          ? {
-              _type: "image",
-              asset: {
+        if (product.category?.name) {
+          catRef = await createCategory(product.category, counter);
+        }
+
+        const sanityProduct = {
+          _id: `product-${counter}`,
+          _type: "product",
+          name: product.name,
+          slug: {
+            _type: "slug",
+            current: slugify(product.name || "default-product", {
+              lower: true,
+              strict: true,
+            }),
+          },
+          price: product.price,
+          category: catRef
+            ? {
                 _type: "reference",
-                _ref: imageRef,
-              },
-            }
-          : undefined,
-        description:
-          product.description ||
-          "A timeless design, with premium materials features as one of our most popular and iconic pieces.",
-        features: product.features || [
-          "Premium material",
-          "Handmade upholstery",
-          "Quality timeless classic",
-        ],
-        dimensions: product.dimensions || {
-          _type: "dimensions",
-          height: "110cm",
-          width: "75cm",
-          depth: "50cm",
-        },
-      };
+                _ref: catRef,
+              }
+            : undefined,
+          tags: product.tags || [],
+          quantity: 50,
+          image: imageRef
+            ? {
+                _type: "image",
+                asset: {
+                  _type: "reference",
+                  _ref: imageRef,
+                },
+              }
+            : undefined,
+          description:
+            product.description ||
+            "A timeless design, with premium materials features as one of our most popular and iconic pieces.",
+          features: product.features || [
+            "Premium material",
+            "Handmade upholstery",
+            "Quality timeless classic",
+          ],
+          dimensions: product.dimensions || {
+            _type: "dimensions",
+            height: "110cm",
+            width: "75cm",
+            depth: "50cm",
+          },
+        };
 
-      console.log("Uploading product:", sanityProduct);
+        console.log("Uploading product:", sanityProduct);
 
-      await client.createOrReplace(sanityProduct);
-      console.log(`✅ Imported product: ${sanityProduct.name}`);
-      counter++;
+        await client.createOrReplace(sanityProduct);
+        console.log(`✅ Imported product: ${sanityProduct.name}`);
+        counter++;
+      } catch (error) {
+        console.error("❌ Error importing product:", product.name, error.message);
+      }
     }
 
     console.log("✅ Data import completed!");
@@ -142,5 +163,5 @@ async function importData() {
   }
 }
 
-// Run the import script
+// Run the script
 importData();

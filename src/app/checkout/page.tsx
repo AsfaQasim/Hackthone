@@ -19,6 +19,7 @@ export default function CheckoutPage() {
     email: "",
   });
 
+  // Calculate subtotal
   const subtotal = cartItems.reduce(
     (total: number, item: { price: number; quantity: number }) =>
       total + item.price * (item.quantity || 1),
@@ -31,14 +32,26 @@ export default function CheckoutPage() {
       [e.target.id]: e.target.value,
     });
   };
-
   const handlePlaceOrder = async () => {
     // Validation check
     if (!formValues.firstName || !formValues.lastName || !formValues.address) {
       toast.error("Please fill in all the required fields.");
       return;
     }
-
+  
+    // Prepare cartItems with valid references
+    const cartItemsWithReferences = cartItems.map((item) => {
+      if (!item._id || (typeof item._id !== 'string' && typeof item._id !== 'number')) {
+        console.error("Invalid _id in cart item:", item);
+        toast.error("Invalid product in cart. Please try again.");
+        throw new Error("Invalid product in cart.");
+      }
+      return {
+        _type: "reference",
+        _ref: String(item._id), 
+      };
+    });
+  
     const orderData = {
       _type: "order",
       firstName: formValues.firstName,
@@ -48,17 +61,15 @@ export default function CheckoutPage() {
       zipCode: formValues.zipCode,
       phone: formValues.phone,
       email: formValues.email,
-      cartItems: cartItems.map((item) => ({
-        _type: "reference",
-        _ref: item._id,
-      })),
-      total: subtotal, // subtotal ko as total use karein
-      discount: 0, // Discount agar nahi hai toh default 0
-      orderDate: new Date().toString(), // Correct syntax
+      cartItems: cartItemsWithReferences,
+      total: subtotal,
+      discount: 0,
+      orderDate: new Date().toISOString(),
     };
-
+  
     try {
-      await client.create(orderData);
+      const response = await client.create(orderData);
+      console.log("Order created successfully:", response);
       localStorage.removeItem("appliedDiscount");
       toast.success("Order placed successfully!");
     } catch (error) {
@@ -66,6 +77,7 @@ export default function CheckoutPage() {
       toast.error("Failed to place order. Please try again.");
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -73,27 +85,35 @@ export default function CheckoutPage() {
       <div className="max-w-4xl mx-auto p-6">
         <h2 className="text-2xl font-bold mb-4">Checkout</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Order Summary */}
           <div className="bg-white shadow-md rounded-lg p-4">
             <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
-            {cartItems.map((item) => (
-              <div key={item._id} className="flex items-center mb-4">
-                <Image
-                  src={item.image || "/default-image.jpg"}
-                  alt={item.name}
-                  width={60}
-                  height={60}
-                  className="rounded-md"
-                />
-                <div className="ml-4">
-                  <p>{item.name}</p>
-                  <p>Price: ${item.price}</p>
-                  <p>Qty: {item.quantity || 1}</p>
+            {cartItems.length > 0 ? (
+              cartItems.map((item) => (
+                <div key={item._id} className="flex items-center mb-4">
+                  <Image
+                    src={item.image || "/default-image.jpg"} // Fallback for missing image
+                    alt={item.name || "Product Image"} // Fallback for missing name
+                    width={60}
+                    height={60}
+                    className="rounded-md"
+                  />
+                  <div className="ml-4">
+                    <p>{item.name || "Unnamed Product"}</p>
+                    <p>Price: ${item.price?.toFixed(2) || "0.00"}</p>
+                    <p>Qty: {item.quantity || 1}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-            <p className="font-bold">Subtotal: ${subtotal.toFixed(2)}</p>
+              ))
+            ) : (
+              <p>Your cart is empty.</p>
+            )}
+            <p className="font-bold">
+              Subtotal: ${subtotal.toFixed(2) || "0.00"}
+            </p>
           </div>
 
+          {/* Billing Info */}
           <div className="bg-white shadow-md rounded-lg p-4">
             <h3 className="text-lg font-semibold mb-4">Billing Info</h3>
             <div>
