@@ -147,6 +147,7 @@ export default function CheckoutPage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded mt-2"
                 placeholder="Enter your first name"
+                required
               />
             </div>
             <div className="mt-4">
@@ -157,6 +158,7 @@ export default function CheckoutPage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded mt-2"
                 placeholder="Enter your last name"
+                required
               />
             </div>
             <div className="mt-4">
@@ -167,6 +169,7 @@ export default function CheckoutPage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded mt-2"
                 placeholder="Enter your address"
+                required
               />
             </div>
             <div className="mt-4">
@@ -177,6 +180,7 @@ export default function CheckoutPage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded mt-2"
                 placeholder="Enter your city"
+                required
               />
             </div>
             <div className="mt-4">
@@ -187,6 +191,7 @@ export default function CheckoutPage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded mt-2"
                 placeholder="Enter your zip code"
+                required
               />
             </div>
             <div className="mt-4">
@@ -197,6 +202,7 @@ export default function CheckoutPage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded mt-2"
                 placeholder="Enter your phone number"
+                required
               />
             </div>
             <div className="mt-4">
@@ -207,6 +213,7 @@ export default function CheckoutPage() {
                 onChange={handleInputChange}
                 className="w-full p-2 border rounded mt-2"
                 placeholder="Enter your email address"
+                required
               />
             </div>
             <button
