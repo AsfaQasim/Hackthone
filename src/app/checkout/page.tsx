@@ -9,7 +9,9 @@ import { client } from "@/sanity/lib/client";
 import { CartItem } from "../Cart/redux/cartslice";
 
 export default function CheckoutPage() {
-  const cartItems: CartItem[] = useSelector((state: RootState) => state.cart.items);
+  const cartItems: CartItem[] = useSelector(
+    (state: RootState) => state.cart.items
+  );
   const [formValues, setFormValues] = useState({
     firstName: "",
     lastName: "",
@@ -41,6 +43,12 @@ export default function CheckoutPage() {
       return;
     }
 
+    // Check if cart is empty
+    if (cartItems.length <= 0) {
+      toast.error("Your cart is empty.");
+      return;
+    }
+
     // Log cartItems for debugging
     console.log("Cart Items:", JSON.stringify(cartItems, null, 2));
 
@@ -50,18 +58,21 @@ export default function CheckoutPage() {
       const itemId = item._id;
 
       if (!itemId) {
-         console.error("Missing _id in cart item:", item);
-         toast.error("Invalid product in cart. Please try again.");
-         throw new Error("Invalid product in cart.");
+        console.error("Missing _id in cart item:", item);
+        toast.error("Invalid product in cart. Please try again.");
+        throw new Error("Invalid product in cart.");
       }
 
       return {
         _type: "reference",
-        _ref: itemId, // Use the _id directly
+        _ref: itemId,
       };
     });
 
-    console.log("Cart Items with References:", JSON.stringify(cartItemsWithReferences, null, 2));
+    console.log(
+      "Cart Items with References:",
+      JSON.stringify(cartItemsWithReferences, null, 2)
+    );
 
     const orderData = {
       _type: "order",
@@ -104,8 +115,8 @@ export default function CheckoutPage() {
               cartItems.map((item) => (
                 <div key={item._id} className="flex items-center mb-4">
                   <Image
-                    src={item.image || "/default-image.jpg"} // Fallback for missing image
-                    alt={item.name || "Product Image"} // Fallback for missing name
+                    src={item.image || "/default-image.jpg"} 
+                    alt={item.name || "Product Image"} 
                     width={60}
                     height={60}
                     className="rounded-md"

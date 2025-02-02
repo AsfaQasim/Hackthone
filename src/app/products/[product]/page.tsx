@@ -94,7 +94,7 @@ const Page = ({ params }: { params: { product: string } }) => {
     }
 
     const cartItem = {
-      _id: data.slug,
+      _id: data._id,
       title: data.name,
       price: data.price,
       image: data.image,
