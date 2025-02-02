@@ -5,7 +5,7 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "../Cart/redux/store";
-import { FaRegHeart, FaUser } from "react-icons/fa";
+import {  FaUser } from "react-icons/fa";
 const Header = () => {
   // Accessing the state using RootState
   const cartItems = useSelector((state: RootState) => state.cart.items.length);
@@ -51,10 +51,7 @@ const Header = () => {
             )}
           </Link>
 
-          {/* User heart Icon */}
-          <Link href="/wishlist">
-            <FaRegHeart size={24} className="text-gray-600 cursor-pointer" />
-          </Link>
+         
           <Link href={'/register'}>
           <FaUser/>
           </Link>
