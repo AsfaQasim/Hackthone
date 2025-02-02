@@ -32,39 +32,43 @@ const Cartpage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
       <h3 className="text-2xl font-bold text-center mb-8 text-blue-900">Your Cart</h3>
-      <div className="space-y-6">
+      
+      <div className="space-y-6 max-w-4xl mx-auto">
         {cartItems.length > 0 ? (
           <>
-            {cartItems.map((item: CartItem) => (
-              <div
-                key={item._id}
-                className="flex items-center bg-white shadow-md rounded-lg p-4 space-x-4"
-              >
-                <Image
-                  src={item.image || "/default-image.jpg"}
-                  alt={item.title || "Product Image"}
-                  height={120}
-                  width={120}
-                  className="rounded-md object-contain"
-                />
-                <div className="flex-grow">
-                  <h5 className="text-lg font-semibold">{item.title}</h5>
-                  <p className="text-gray-600">${item.price}</p>
-                  <p className="text-gray-500">Qty: {item.quantity || 1}</p>
-                </div>
-                <button
-                  className="bg-[#2A254B] text-white px-4 py-2  hover:bg-[#3c3567]"
-                  onClick={() => handleRemove(String(item._id))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {cartItems.map((item: CartItem) => (
+                <div
+                  key={item._id}
+                  className="flex flex-col sm:flex-row items-center bg-white shadow-md rounded-lg p-4 space-y-4 sm:space-y-0 sm:space-x-4"
                 >
-                  Remove
-                </button>
-              </div>
-            ))}
-            <div className="bg-white shadow-md rounded-lg p-6">
-              <h4 className="text-xl font-semibold">Cart Summary</h4>
-              <p className="text-lg">Total: ${totalPrice.toFixed(2)}</p>
+                  <Image
+                    src={item.image || "/default-image.jpg"}
+                    alt={item.title || "Product Image"}
+                    height={120}
+                    width={120}
+                    className="rounded-md object-contain"
+                  />
+                  <div className="flex-grow text-center sm:text-left">
+                    <h5 className="text-lg font-semibold">{item.title}</h5>
+                    <p className="text-gray-600">${item.price}</p>
+                    <p className="text-gray-500">Qty: {item.quantity || 1}</p>
+                  </div>
+                  <button
+                    className="bg-[#2A254B] text-white px-4 py-2 w-full sm:w-auto hover:bg-[#3c3567] rounded-md"
+                    onClick={() => handleRemove(String(item._id))}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="bg-white shadow-md rounded-lg p-6 max-w-lg mx-auto">
+              <h4 className="text-xl font-semibold text-center sm:text-left">Cart Summary</h4>
+              <p className="text-lg text-center sm:text-left">Total: ${totalPrice.toFixed(2)}</p>
               <button
-                className="bg-[#2A254B]  text-white w-full py-3 rounded-lg mt-4 hover:bg-[#3c3567]"
+                className="bg-[#2A254B] text-white w-full py-3 rounded-lg mt-4 hover:bg-[#3c3567]"
                 onClick={handleCheckout}
               >
                 Proceed to Checkout
