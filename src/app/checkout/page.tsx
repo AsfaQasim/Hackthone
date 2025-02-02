@@ -51,7 +51,7 @@ export default function CheckoutPage() {
 
   const validateForm = () => {
     let valid = true;
-    let errors = { ...formErrors };
+    const errors = { ...formErrors };
 
     // Check for empty fields
     Object.keys(formValues).forEach((field) => {
