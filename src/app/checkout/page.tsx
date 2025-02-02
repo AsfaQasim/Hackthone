@@ -21,6 +21,15 @@ export default function CheckoutPage() {
     phone: "",
     email: "",
   });
+  const [formErrors, setFormErrors] = useState({
+    firstName: false,
+    lastName: false,
+    address: false,
+    city: false,
+    zipCode: false,
+    phone: false,
+    email: false,
+  });
 
   // Calculate subtotal
   const subtotal = cartItems.reduce(
@@ -34,11 +43,31 @@ export default function CheckoutPage() {
       ...formValues,
       [e.target.id]: e.target.value,
     });
+    setFormErrors({
+      ...formErrors,
+      [e.target.id]: false, // Clear the error when the user types
+    });
+  };
+
+  const validateForm = () => {
+    let valid = true;
+    let errors = { ...formErrors };
+
+    // Check for empty fields
+    Object.keys(formValues).forEach((field) => {
+      if (!formValues[field as keyof typeof formValues]) {
+        errors[field as keyof typeof formErrors] = true;
+        valid = false;
+      }
+    });
+
+    setFormErrors(errors);
+    return valid;
   };
 
   const handlePlaceOrder = async () => {
     // Validation check
-    if (!formValues.firstName || !formValues.lastName || !formValues.address) {
+    if (!validateForm()) {
       toast.error("Please fill in all the required fields.");
       return;
     }
@@ -145,10 +174,11 @@ export default function CheckoutPage() {
                 id="firstName"
                 value={formValues.firstName}
                 onChange={handleInputChange}
-                className="w-full p-2 border rounded mt-2"
+                className={`w-full p-2 border rounded mt-2 ${formErrors.firstName ? "border-red-500" : ""}`}
                 placeholder="Enter your first name"
                 required
               />
+              {formErrors.firstName && <p className="text-red-500">First name is required.</p>}
             </div>
             <div className="mt-4">
               <label htmlFor="lastName">Last Name</label>
@@ -156,10 +186,11 @@ export default function CheckoutPage() {
                 id="lastName"
                 value={formValues.lastName}
                 onChange={handleInputChange}
-                className="w-full p-2 border rounded mt-2"
+                className={`w-full p-2 border rounded mt-2 ${formErrors.lastName ? "border-red-500" : ""}`}
                 placeholder="Enter your last name"
                 required
               />
+              {formErrors.lastName && <p className="text-red-500">Last name is required.</p>}
             </div>
             <div className="mt-4">
               <label htmlFor="address">Address</label>
@@ -167,10 +198,11 @@ export default function CheckoutPage() {
                 id="address"
                 value={formValues.address}
                 onChange={handleInputChange}
-                className="w-full p-2 border rounded mt-2"
+                className={`w-full p-2 border rounded mt-2 ${formErrors.address ? "border-red-500" : ""}`}
                 placeholder="Enter your address"
                 required
               />
+              {formErrors.address && <p className="text-red-500">Address is required.</p>}
             </div>
             <div className="mt-4">
               <label htmlFor="city">City</label>
@@ -178,10 +210,11 @@ export default function CheckoutPage() {
                 id="city"
                 value={formValues.city}
                 onChange={handleInputChange}
-                className="w-full p-2 border rounded mt-2"
+                className={`w-full p-2 border rounded mt-2 ${formErrors.city ? "border-red-500" : ""}`}
                 placeholder="Enter your city"
                 required
               />
+              {formErrors.city && <p className="text-red-500">City is required.</p>}
             </div>
             <div className="mt-4">
               <label htmlFor="zipCode">Zip Code</label>
@@ -189,10 +222,11 @@ export default function CheckoutPage() {
                 id="zipCode"
                 value={formValues.zipCode}
                 onChange={handleInputChange}
-                className="w-full p-2 border rounded mt-2"
+                className={`w-full p-2 border rounded mt-2 ${formErrors.zipCode ? "border-red-500" : ""}`}
                 placeholder="Enter your zip code"
                 required
               />
+              {formErrors.zipCode && <p className="text-red-500">Zip code is required.</p>}
             </div>
             <div className="mt-4">
               <label htmlFor="phone">Phone</label>
@@ -200,10 +234,11 @@ export default function CheckoutPage() {
                 id="phone"
                 value={formValues.phone}
                 onChange={handleInputChange}
-                className="w-full p-2 border rounded mt-2"
+                className={`w-full p-2 border rounded mt-2 ${formErrors.phone ? "border-red-500" : ""}`}
                 placeholder="Enter your phone number"
                 required
               />
+              {formErrors.phone && <p className="text-red-500">Phone number is required.</p>}
             </div>
             <div className="mt-4">
               <label htmlFor="email">Email</label>
@@ -211,10 +246,11 @@ export default function CheckoutPage() {
                 id="email"
                 value={formValues.email}
                 onChange={handleInputChange}
-                className="w-full p-2 border rounded mt-2"
+                className={`w-full p-2 border rounded mt-2 ${formErrors.email ? "border-red-500" : ""}`}
                 placeholder="Enter your email address"
                 required
               />
+              {formErrors.email && <p className="text-red-500">Email is required.</p>}
             </div>
             <button
               className="bg-[#2A254B] text-white w-full py-3 rounded-lg mt-4 hover:bg-[#3c3567]"
