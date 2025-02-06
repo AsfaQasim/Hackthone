@@ -1,28 +1,30 @@
-"use client"
-// import type { Metadata } from "next";
-import "./globals.css"; // Ensure global CSS is applied
+"use client";
+
+import { ClerkProvider, ClerkLoaded } from "@clerk/nextjs";
+import { Provider } from "react-redux";
+import store from "./Cart/redux/store";
 import Header from "./component/header";
 import Footer from "./component/footer";
-import { Provider } from "react-redux"; // Import the correct Provider from react-redux
-import store from "./Cart/redux/store"; // Ensure correct store import
-
-
+import "./globals.css";
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className="antialiased">
-        {/* Only one Provider wrapping the entire app */}
+    <ClerkProvider>
+      <ClerkLoaded>
         <Provider store={store}>
-          <Header />
-          {children}
-          <Footer />
+          <html lang="en">
+            <body className="antialiased">
+              <Header />
+              {children}
+              <Footer />
+            </body>
+          </html>
         </Provider>
-      </body>
-    </html>
+      </ClerkLoaded>
+    </ClerkProvider>
   );
 }
