@@ -6,6 +6,7 @@ import { RootState } from "./redux/store";
 import { remove } from "./redux/cartslice";
 import { CartItem } from "./redux/cartslice";
 import { useRouter } from "next/navigation";
+import AuthGuard from "../component/AuthGuard";
 
 const Cartpage: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const Cartpage: React.FC = () => {
   };
 
   return (
+    <AuthGuard>
     <div className="min-h-screen bg-gray-100 py-8 px-4">
       <h3 className="text-2xl font-bold text-center mb-8 text-blue-900">
         Your Cart
@@ -88,6 +90,7 @@ const Cartpage: React.FC = () => {
         )}
       </div>
     </div>
+    </AuthGuard>
   );
 };
 

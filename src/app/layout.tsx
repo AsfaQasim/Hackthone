@@ -1,6 +1,6 @@
 "use client";
 
-import { ClerkProvider, ClerkLoaded } from "@clerk/nextjs";
+import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-react";
 import { Provider } from "react-redux";
 import store from "./Cart/redux/store";
 import Header from "./component/header";
@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}>
       <ClerkLoaded>
         <Provider store={store}>
           <html lang="en">
