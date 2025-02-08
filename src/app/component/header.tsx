@@ -5,7 +5,7 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "../Cart/redux/store";
-import {  FaUser } from "react-icons/fa";
+
 const Header = () => {
   // Accessing the state using RootState
   const cartItems = useSelector((state: RootState) => state.cart.items.length);
@@ -52,9 +52,7 @@ const Header = () => {
           </Link>
 
          
-          <Link href={'/register'}>
-          <FaUser/>
-          </Link>
+       
         </div>
        
       </header>
